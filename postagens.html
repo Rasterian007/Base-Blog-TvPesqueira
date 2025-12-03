@@ -5,8 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin - Gerenciar Postagens</title>
     <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet">
-    <script src="access-control.js" defer></script> 
-    
     <style>
         /* --- ESTILOS DE ADMIN GERAIS --- */
         :root {
@@ -22,7 +20,7 @@
         body { font-family: 'Open Sans', sans-serif; background-color: var(--cor-fundo); color: var(--cor-texto); display: flex; min-height: 100vh; }
         a { text-decoration: none; color: inherit; }
 
-        /* --- SIDEBAR (Copie os estilos do seu admin.html para consistência) --- */
+        /* --- SIDEBAR --- */
         .sidebar {
             width: 250px;
             background: var(--link-secundario);
@@ -147,7 +145,7 @@
         .btn-delete { background: #cc0000; color: white; }
         .btn-view { background: #3498db; color: white; }
         
-        /* Responsividade Tabela (Opcional: empilha em telas pequenas) */
+        /* Responsividade Tabela */
         @media screen and (max-width: 768px) {
             .post-table thead { display: none; }
             .post-table, .post-table tbody, .post-table tr, .post-table td {
@@ -218,16 +216,78 @@
     </div>
 
     <script>
-        // Assume que loadPosts(), savePosts() e checkLoginAndRole() estão definidos em access-control.js
+        // ====================================================================
+        // FUNÇÕES UTILITÁRIAS E DE ACESSO (Definidas para tornar o arquivo autônomo)
+        // ====================================================================
+        const POSTS_STORAGE_KEY = 'tvpesqueira_posts';
+
+        /**
+         * Carrega as postagens do LocalStorage. 
+         * Retorna apenas posts salvos, garantindo que o blog comece vazio.
+         */
+        window.loadPosts = function() {
+            const postsJson = localStorage.getItem(POSTS_STORAGE_KEY);
+            let posts;
+            try {
+                posts = JSON.parse(postsJson);
+            } catch (e) {
+                console.error("Erro ao carregar posts do localStorage:", e);
+                posts = [];
+            }
+            // Garante que é um array ou retorna um array vazio se não houver dados.
+            return (Array.isArray(posts) && posts.length > 0) ? posts : [];
+        };
+
+        /**
+         * Salva a lista de postagens no LocalStorage.
+         */
+        window.savePosts = function(posts) {
+            try {
+                localStorage.setItem(POSTS_STORAGE_KEY, JSON.stringify(posts));
+            } catch (e) {
+                console.error("Erro ao salvar posts no localStorage:", e);
+                alert("Erro ao salvar as alterações no LocalStorage.");
+            }
+        };
+
+        /**
+         * Formata uma string de data para exibição amigável.
+         */
+        window.formatDate = function(dateString) {
+            if (!dateString) return 'Data Desconhecida';
+            try {
+                const date = new Date(dateString);
+                if (isNaN(date)) return 'Data Inválida';
+                
+                const options = { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' };
+                return date.toLocaleDateString('pt-BR', options);
+            } catch (e) {
+                return 'Erro na Data';
+            }
+        };
+
+        // Simula a verificação de login e role (necessário para evitar erros)
+        window.checkLoginAndRole = function() {
+            // Em um ambiente real, isso redirecionaria para a tela de login.
+            // Para a simulação, retornamos 'true'.
+            return true; 
+        };
+
+        // Simula a obtenção da função do usuário. 
+        // Você pode mudar 'admin' para 'reporter' para testar as restrições.
+        window.getUserRole = function() {
+            return 'admin'; // Padrão: 'admin' para ter acesso total. Mude para 'reporter' para testar restrição.
+        };
+        // ====================================================================
+        
         
         function formatPostRow(post) {
+            // Usa window.formatDate para consistência
+            const displayDate = window.formatDate(post.date || post.createdAt); 
             const statusClass = post.status === 'published' ? 'published' : 'draft';
             const statusText = post.status === 'published' ? 'Publicado' : 'Rascunho';
             
-            // Simulação simples de tempo
-            const displayTime = post.time || new Date(post.createdAt).toLocaleDateString('pt-BR');
-            
-            // Determina se o botão de Excluir deve ser habilitado
+            // Determina se o botão de Excluir deve ser habilitado (apenas Admin)
             const userRole = window.getUserRole ? window.getUserRole() : null;
             const isAdmin = userRole === 'admin';
             
@@ -238,7 +298,7 @@
             return `
                 <tr id="post-row-${post.id}">
                     <td data-label="Título">${post.title}</td>
-                    <td data-label="Data/Hora">${displayTime}</td>
+                    <td data-label="Data/Hora">${displayDate}</td>
                     <td data-label="Categoria">${post.category}</td>
                     <td data-label="Autor">${post.author}</td>
                     <td data-label="Status"><span class="status-tag ${statusClass}">${statusText}</span></td>
@@ -253,12 +313,12 @@
 
         function renderPostList() {
             // Garante que a autenticação está ok antes de carregar
-            if (typeof checkLoginAndRole === 'function') {
-                if (!checkLoginAndRole()) return;
+            if (typeof window.checkLoginAndRole === 'function') {
+                if (!window.checkLoginAndRole()) return;
             }
             
-            // Assume que loadPosts está definido globalmente
-            const allPosts = window.loadPosts ? window.loadPosts() : [];
+            // Assume que loadPosts está definido globalmente (agora definido acima)
+            const allPosts = window.loadPosts();
             const postListBody = document.getElementById('post-list-body');
             
             if (allPosts.length === 0) {
@@ -270,7 +330,7 @@
             }
             
             // Ordena os posts pelo mais recente primeiro
-            const sortedPosts = allPosts.sort((a, b) => b.createdAt - a.createdAt);
+            const sortedPosts = allPosts.sort((a, b) => new Date(b.date || b.createdAt) - new Date(a.date || a.createdAt));
             
             const postsHtml = sortedPosts.map(post => formatPostRow(post)).join('');
             postListBody.innerHTML = postsHtml;
@@ -280,6 +340,11 @@
         }
         
         function deletePost(postId) {
+            if (window.getUserRole() !== 'admin') {
+                alert("Você não tem permissão para excluir postagens.");
+                return;
+            }
+            
             if (confirm(`Tem certeza que deseja EXCLUIR o post ID ${postId}? Esta ação não pode ser desfeita na simulação!`)) {
                 // Remove do localStorage
                 let posts = window.loadPosts();
@@ -291,6 +356,11 @@
                 if (row) {
                     row.remove();
                     alert(`Postagem ID ${postId} removida com sucesso. (Simulação Front-end)`);
+                    
+                    // Recarrega a lista se for a última postagem
+                    if (posts.length === 0) {
+                        renderPostList();
+                    }
                 } else {
                     console.error("Erro: A linha (<tr>) da postagem não foi encontrada.");
                     alert("Erro interno: Não foi possível localizar a postagem para exclusão.");
@@ -300,17 +370,14 @@
         
         // Esta função simula a restrição de permissão (Admin vs. Repórter)
         function applyRoleRestrictions() {
-            const userRole = window.getUserRole ? window.getUserRole() : null; 
+            const userRole = window.getUserRole(); 
             
-            // Oculta/Desabilita o botão 'Excluir' e o botão 'Nova Postagem' para Repórteres
+            // Oculta o botão de adicionar nova postagem para Repórteres
             if (userRole === 'reporter') {
-                // O botão de exclusão já é desabilitado/ocultado na função formatPostRow
-                
-                // Oculta o botão de adicionar nova postagem
                 const btnAdd = document.getElementById('btn-nova-postagem');
                 if (btnAdd) {
                     btnAdd.style.display = 'none';
-                    alert("Aviso: Repórteres têm a opção 'Nova Postagem' e 'Excluir' desabilitadas nesta simulação.");
+                    // Nota: O botão de exclusão já é desabilitado/ocultado na função formatPostRow
                 }
             }
         }
