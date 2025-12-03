@@ -413,49 +413,44 @@
     </footer>
 
     <!-- | Após a Correção (Novo Código JavaScript) |
-| :--- |
-| ```javascript -->
+     | :--- |
+     | ```javascript -->
 <script>
-    // --- FUNÇÕES DE DADOS (CORRIGIDAS) ---
-    
-    const POSTS_STORAGE_KEY = 'tvpesqueira_posts';
-
-    function loadPosts() {
-        const postsJson = localStorage.getItem(POSTS_STORAGE_KEY);
-        let posts = [];
-        try {
-            if (postsJson) {
+    // 2. Definimos a chave do LocalStorage
+        const POSTS_STORAGE_KEY = 'tvpesqueira_posts';
+        
+        // 3. A função loadPosts() NÃO RETORNA MAIS AS POSTAGENS PADRÃO
+        function loadPosts() {
+            const postsJson = localStorage.getItem(POSTS_STORAGE_KEY);
+            let posts;
+            try {
+                // Tenta fazer o parse do JSON do localStorage
                 posts = JSON.parse(postsJson);
+            } catch (e) {
+                console.error("Erro ao carregar posts do localStorage:", e);
+                // Em caso de erro de parse, trata como array vazia
+                posts = []; 
             }
-        } catch (e) {
-            console.error("Erro ao carregar posts do localStorage:", e);
-            // Em caso de erro, retorna array vazio
-            return [];
+            
+            // Retorna posts do localStorage se existirem e forem válidos, senão retorna array vazia
+            // O blog AGORA COMEÇA VAZIO se não houver nada salvo.
+            return (Array.isArray(posts) && posts.length > 0) ? posts : [];
         }
         
-        // CORREÇÃO ESSENCIAL: Removemi o DEFAULT_POSTS. 
-        // Se o localStorage estiver vazio ou inválido, retorna um array vazio [].
-        if (!Array.isArray(posts) || posts.length === 0) {
-             return []; 
+        function formatDate(dateString) {
+            // (Mantenha o resto da função formatDate original)
+            if (!dateString) return 'Data Desconhecida';
+            try {
+                const date = new Date(dateString);
+                if (isNaN(date)) return 'Data Inválida';
+                
+                const options = { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' };
+                return date.toLocaleDateString('pt-BR', options);
+            } catch (e) {
+                return 'Erro na Data';
+            }
         }
-        return posts;
-    }
-
-    // Função savePosts removida: Sua remoção evita que a página inicial salve os DEFAULT_POSTS no localStorage.
-
-    function formatDate(dateString) {
-        if (!dateString) return 'Data Desconhecida';
-        try {
-            const date = new Date(dateString);
-            if (isNaN(date)) return 'Data Inválida';
-            
-            const options = { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' };
-            return date.toLocaleDateString('pt-BR', options);
-        } catch (e) {
-            return 'Erro na Data';
-        }
-    }
-    // --- FIM DAS FUNÇÕES DE DADOS ---
+        // FIM das Funções de formatação e loadPosts
 
     // --- FUNÇÃO DE RENDERIZAÇÃO DA PÁGINA INICIAL ---
     function renderHomePage() {
