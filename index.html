@@ -423,9 +423,10 @@
     </footer>
 
     <script>
-        // --- FUNÇÕES DE DADOS (Mantidas) ---
+        // --- FUNÇÕES DE DADOS (CORRIGIDAS) ---
+        // 🛑 MUITO IMPORTANTE: SUBSTITUA ESTE ARRAY PELOS SEUS POSTS REAIS.
         const DEFAULT_POSTS = [
-            // Posts padrão atualizados para incluir o campo 'destaque'
+            // Posts padrão (ATUALIZE ESTES COM SEUS POSTS REAIS COPIADOS DO CONSOLE DO SEU PC)
             { id: 1, title: "Prefeito de Pesqueira Anuncia Novos Projetos e Recortes de Gastos", description: "Obras de pavimentação e saneamento básico começam. Expectativa é de investimento recorde na zona rural. [Leia Mais...]", author: "Redação", date: "2025-12-02T10:00:00", category: "Política", img: "https://via.placeholder.com/1200x600.png?text=Prefeitura+Anuncia+Projetos+Hero", status: "published", destaque: "main" }, // DESTAQUE PRINCIPAL
             { id: 2, title: "Festival de Cultura Local Bate Recorde de Público e Recebe Elogios", description: "Edição 2025 do festival atrai milhares de visitantes e destaca artistas locais e regionais.", author: "Maria Silva", date: "2025-12-01T18:30:00", category: "Cultura", img: "https://via.placeholder.com/300x180.png?text=Festival+Cultura+Sub-Destaque", status: "published", destaque: "sub" }, // SUB-DESTAQUE
             { id: 3, title: "Comércio Pesqueirense Projeta Alta nas Vendas de Final de Ano", description: "Expectativa de crescimento de 15% em relação ao ano anterior devido a novos investimentos.", author: "João Batista", date: "2025-12-01T09:15:00", category: "Economia", img: "https://via.placeholder.com/300x180.png?text=Comercio+Vendas", status: "published", destaque: null },
@@ -438,24 +439,25 @@
 
         function loadPosts() {
             const postsJson = localStorage.getItem(POSTS_STORAGE_KEY);
-            let posts;
+            let posts = [];
             try {
-                posts = JSON.parse(postsJson);
+                if (postsJson) {
+                    posts = JSON.parse(postsJson);
+                }
             } catch (e) {
                 console.error("Erro ao carregar posts do localStorage:", e);
             }
-            // Se não houver posts salvos ou der erro, salva os posts padrão e retorna eles
+            // 🟢 CORREÇÃO CRÍTICA: Se não houver posts válidos salvos (1º acesso do celular), 
+            // retorna os DEFAULT_POSTS, mas NÃO os salva de volta no localStorage.
             if (!Array.isArray(posts) || posts.length === 0) {
-                 savePosts(DEFAULT_POSTS);
-                 return DEFAULT_POSTS;
+                 return DEFAULT_POSTS; 
             }
             return posts;
         }
 
-        // Função para salvar posts (incluída para o link com o admin.html)
-        function savePosts(posts) {
-            localStorage.setItem(POSTS_STORAGE_KEY, JSON.stringify(posts));
-        }
+        // Função savePosts removida daqui, pois só é necessária nos arquivos de Admin/Edição.
+        // Se ela for necessária para outras páginas de front-end (como categoria.html), ela deve ser incluída lá,
+        // mas não na página inicial para evitar salvar o DEFAULT_POSTS.
 
         function formatDate(dateString) {
             if (!dateString) return 'Data Desconhecida';
@@ -471,7 +473,7 @@
         }
         // --- FIM DAS FUNÇÕES DE DADOS ---
 
-        // --- FUNÇÃO DE RENDERIZAÇÃO DA PÁGINA INICIAL (CORRIGIDA) ---
+        // --- FUNÇÃO DE RENDERIZAÇÃO DA PÁGINA INICIAL (MANTIDA) ---
         function renderHomePage() {
             const allPosts = loadPosts().filter(p => p.status === 'published'); // Apenas publicados
             
