@@ -25,7 +25,7 @@
         
         .container { max-width: 1200px; margin: 20px auto; padding: 0 20px; }
 
-        /* --- HEADER --- (Mantido) */
+        /* --- HEADER --- */
         header { background-color: var(--cor-secundaria); color: var(--cor-terciaria); position: sticky; top: 0; z-index: 1000; border-bottom: 4px solid var(--cor-primaria); }
         .header-main { 
             max-width: 1200px; 
@@ -44,7 +44,7 @@
         .btn-live { background: #cc0000; color: white; padding: 5px 15px; border-radius: 50px; font-weight: bold; font-size: 0.8rem; display: flex; align-items: center; gap: 5px; }
         .menu-toggle { display: none; cursor: pointer; color: var(--cor-terciaria); font-size: 1.5rem; }
 
-        /* --- GRID PRINCIPAL E BARRA LATERAL (Mantido) --- */
+        /* --- GRID PRINCIPAL E BARRA LATERAL --- */
         .container-grid {
             display: grid;
             grid-template-columns: 2fr 1fr; /* Conteúdo principal (2/3) e Sidebar (1/3) */
@@ -60,10 +60,10 @@
             grid-column: 2 / 3;
         }
 
-        /* --- ESTILOS DE PUBLICIDADE NA BARRA LATERAL (Mantido) --- */
+        /* --- ESTILOS DE PUBLICIDADE NA BARRA LATERAL --- */
         .ad-unit {
             background: var(--cor-terciaria);
-            border-radius: 8px; /* Alterado de 23px para 8px para consistência */
+            border-radius: 8px; 
             box-shadow: 0 2px 8px rgba(0,0,0,0.1);
             margin-bottom: 20px;
             padding: 15px;
@@ -77,7 +77,6 @@
             margin-bottom: 10px;
             text-transform: uppercase;
         }
-        /* Adicionando estilo específico para a imagem de publicidade */
         .ad-unit a img {
             border-radius: 4px;
         }
@@ -101,7 +100,7 @@
             border: 0;
         }
 
-        /* --- DESTAQUES (CORRIGIDO/APERFEIÇOADO) --- */
+        /* --- DESTAQUES --- */
         .featured-section { 
             display: grid; 
             grid-template-columns: 1fr; 
@@ -109,14 +108,12 @@
             margin-bottom: 40px; 
         }
 
-        /* NOVO: Grid interno para Hero e Sub-Destaques */
         .featured-content-grid {
             display: grid;
-            grid-template-columns: 2fr 1fr; /* Hero (2/3) | Sub-Destaques (1/3) */
+            grid-template-columns: 2fr 1fr; 
             gap: 20px;
         }
 
-        /* Destaque Principal (Hero) */
         .hero-post {
             background: var(--cor-terciaria);
             border-radius: 8px;
@@ -124,7 +121,6 @@
             box-shadow: 0 4px 10px rgba(0,0,0,0.1);
             position: relative;
         }
-        /* Assegura que o hero ocupe a primeira coluna do grid interno */
         .hero-post-container {
             grid-column: 1 / 2;
         }
@@ -171,13 +167,12 @@
         .hero-excerpt { font-size: 1rem; color: #ddd; }
         .hero-meta { font-size: 0.8rem; color: #bbb; margin-top: 10px; }
 
-        /* Sub-Destaques */
         .sub-featured-list-container {
-            grid-column: 2 / 3; /* Ocupa a segunda coluna do grid interno */
+            grid-column: 2 / 3; 
         }
 
         .sub-featured-list {
-            display: flex; /* Alterado para flex para dispor em coluna (o card já é flex-direction: column no mobile) */
+            display: flex; 
             flex-direction: column;
             gap: 20px;
         }
@@ -195,7 +190,7 @@
         .sub-featured-img {
             width: 40%;
             flex-shrink: 0;
-            height: 90px; /* Reduzido um pouco para caber 2 sub-destaques confortavelmente */
+            height: 90px; 
             overflow: hidden;
         }
         .sub-featured-img img { object-fit: cover; height: 100%; }
@@ -208,7 +203,7 @@
         .sub-featured-title { font-family: 'Montserrat', sans-serif; font-size: 0.95rem; line-height: 1.3; margin: 0; max-height: 48px; overflow: hidden; }
         .sub-featured-meta { font-size: 0.7rem; color: #999; margin-top: 5px; }
 
-        /* --- NOTÍCIAS RECENTES (GRID - Mantido) --- */
+        /* --- NOTÍCIAS RECENTES (GRID) --- */
         .section-header { 
             font-family: 'Montserrat', sans-serif; 
             font-size: 1.8rem; 
@@ -240,7 +235,7 @@
         .post-card-excerpt { font-size: 0.9rem; color: #555; height: 40px; overflow: hidden; }
         .post-card-meta { font-size: 0.75rem; color: #999; margin-top: 10px; }
 
-        /* --- FOOTER (Mantido) --- */
+        /* --- FOOTER --- */
         footer { background-color: var(--cor-secundaria); color: var(--cor-terciaria); padding: 30px 0; border-top: 4px solid var(--cor-primaria); }
         .footer-content { max-width: 1200px; margin: 0 auto; padding: 0 20px; display: grid; grid-template-columns: repeat(4, 1fr); gap: 30px; }
         .footer-col h4 { font-family: 'Montserrat', sans-serif; font-size: 1.2rem; margin-bottom: 15px; color: var(--cor-primaria); }
@@ -251,16 +246,14 @@
         @media (max-width: 992px) {
             .container { padding: 0 10px; }
             
-            /* Ajuste do Grid Principal: Coluna única no tablet/mobile */
             .container-grid {
                 grid-template-columns: 1fr; 
                 gap: 20px;
             }
             .main-content, .sidebar {
-                grid-column: 1 / -1; /* Ocupa a largura total */
+                grid-column: 1 / -1; 
             }
 
-            /* NOVO: Destaque Principal e Sub-Destaques empilhados no tablet */
             .featured-content-grid {
                 grid-template-columns: 1fr; 
             }
@@ -271,19 +264,17 @@
                 grid-column: 1 / -1;
             }
             .sub-featured-list {
-                flex-direction: row; /* Volta a ser row no tablet para aproveitar o espaço */
+                flex-direction: row; 
                 display: grid;
-                grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); /* 2 colunas no tablet */
+                grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); 
             }
             .hero-img-container { height: 300px; } 
             .hero-title { font-size: 1.8rem; }
-            .sub-featured-card { flex-direction: row; } /* Volta para a linha no tablet */
-            .sub-featured-img { width: 40%; height: 90px; } /* Mantém imagem ao lado do texto */
+            .sub-featured-card { flex-direction: row; } 
+            .sub-featured-img { width: 40%; height: 90px; } 
             
-            /* Grid de Notícias */
             .news-grid { grid-template-columns: repeat(2, 1fr); }
             
-            /* Menu */
             .header-main { flex-wrap: wrap; }
             .nav-menu {
                 display: none;
@@ -303,14 +294,12 @@
             .section-header { font-size: 1.5rem; }
             .footer-content { grid-template-columns: 1fr 1fr; }
 
-            /* Mobile: Sub-Destaques empilhados */
             .sub-featured-list {
                 grid-template-columns: 1fr;
             }
-            .sub-featured-card { flex-direction: column; } /* Volta para a coluna no mobile */
-            .sub-featured-img { width: 100%; height: 150px; } /* Imagem em cima do texto no mobile */
+            .sub-featured-card { flex-direction: column; } 
+            .sub-featured-img { width: 100%; height: 150px; } 
 
-            /* Sidebar oculta: Mantido como estava */
             .sidebar { 
                 display: none; 
             }
@@ -401,6 +390,7 @@
                 <a href="categoria.html?cat=Cidade">Cidade</a>
                 <a href="categoria.html?cat=Polícia">Polícia</a>
                 <a href="categoria.html?cat=Política">Política</a>
+                <a href="categoria.html?cat=Esportes">Esportes</a>
                 <a href="categoria.html?cat=Economia">Economia</a>
                 <a href="categoria.html?cat=Cultura">Cultura</a>
             </div>
@@ -424,9 +414,11 @@
 
     <script>
         // --- FUNÇÕES DE DADOS (CORRIGIDAS) ---
-        // 🛑 MUITO IMPORTANTE: SUBSTITUA ESTE ARRAY PELOS SEUS POSTS REAIS.
+        
+        // 🛑🛑🛑 AÇÃO NECESSÁRIA: SUBSTITUA O CONTEÚDO DESTE ARRAY ABAIXO 
+        // PELOS SEUS POSTS REAIS COPIADOS DO CONSOLE DO SEU COMPUTADOR.
         const DEFAULT_POSTS = [
-            // Posts padrão (ATUALIZE ESTES COM SEUS POSTS REAIS COPIADOS DO CONSOLE DO SEU PC)
+            // Posts padrão (ESTES SÃO APENAS EXEMPLOS - SUBSTITUA!)
             { id: 1, title: "Prefeito de Pesqueira Anuncia Novos Projetos e Recortes de Gastos", description: "Obras de pavimentação e saneamento básico começam. Expectativa é de investimento recorde na zona rural. [Leia Mais...]", author: "Redação", date: "2025-12-02T10:00:00", category: "Política", img: "https://via.placeholder.com/1200x600.png?text=Prefeitura+Anuncia+Projetos+Hero", status: "published", destaque: "main" }, // DESTAQUE PRINCIPAL
             { id: 2, title: "Festival de Cultura Local Bate Recorde de Público e Recebe Elogios", description: "Edição 2025 do festival atrai milhares de visitantes e destaca artistas locais e regionais.", author: "Maria Silva", date: "2025-12-01T18:30:00", category: "Cultura", img: "https://via.placeholder.com/300x180.png?text=Festival+Cultura+Sub-Destaque", status: "published", destaque: "sub" }, // SUB-DESTAQUE
             { id: 3, title: "Comércio Pesqueirense Projeta Alta nas Vendas de Final de Ano", description: "Expectativa de crescimento de 15% em relação ao ano anterior devido a novos investimentos.", author: "João Batista", date: "2025-12-01T09:15:00", category: "Economia", img: "https://via.placeholder.com/300x180.png?text=Comercio+Vendas", status: "published", destaque: null },
@@ -447,17 +439,15 @@
             } catch (e) {
                 console.error("Erro ao carregar posts do localStorage:", e);
             }
-            // 🟢 CORREÇÃO CRÍTICA: Se não houver posts válidos salvos (1º acesso do celular), 
-            // retorna os DEFAULT_POSTS, mas NÃO os salva de volta no localStorage.
+            // CORREÇÃO: Se não houver posts válidos salvos (ou seja, localStorage vazio), 
+            // retorna os DEFAULT_POSTS (seus posts reais), mas não os salva de volta.
             if (!Array.isArray(posts) || posts.length === 0) {
                  return DEFAULT_POSTS; 
             }
             return posts;
         }
 
-        // Função savePosts removida daqui, pois só é necessária nos arquivos de Admin/Edição.
-        // Se ela for necessária para outras páginas de front-end (como categoria.html), ela deve ser incluída lá,
-        // mas não na página inicial para evitar salvar o DEFAULT_POSTS.
+        // Função savePosts removida: Sua remoção evita que a página inicial salve os DEFAULT_POSTS no localStorage.
 
         function formatDate(dateString) {
             if (!dateString) return 'Data Desconhecida';
@@ -473,18 +463,16 @@
         }
         // --- FIM DAS FUNÇÕES DE DADOS ---
 
-        // --- FUNÇÃO DE RENDERIZAÇÃO DA PÁGINA INICIAL (MANTIDA) ---
+        // --- FUNÇÃO DE RENDERIZAÇÃO DA PÁGINA INICIAL ---
         function renderHomePage() {
-            const allPosts = loadPosts().filter(p => p.status === 'published'); // Apenas publicados
+            const allPosts = loadPosts().filter(p => p.status === 'published'); 
             
-            // Ordena do mais recente para o mais antigo
             const sortedPosts = allPosts.sort((a, b) => new Date(b.date) - new Date(a.date));
 
             // 1. Destaques (Hero e Sub-Destaques)
             let mainDestaque = sortedPosts.find(p => p.destaque === 'main');
             let subDestaques = sortedPosts.filter(p => p.destaque === 'sub').slice(0, 2); 
             
-            // Se não houver 'main', usa o primeiro post
             if (!mainDestaque && sortedPosts.length > 0) {
                  mainDestaque = sortedPosts[0];
             }
@@ -493,7 +481,6 @@
             featuredSection.innerHTML = ''; 
 
             if (mainDestaque) {
-                // HTML do Destaque Principal
                 const heroHtml = `
                     <div class="hero-post-container">
                         <a href="post.html?id=${mainDestaque.id}" class="hero-post">
@@ -510,7 +497,6 @@
                     </div>
                 `;
                 
-                // HTML dos Sub-Destaques
                 let subDestaquesHtml = subDestaques.map(post => `
                     <a href="post.html?id=${post.id}" class="sub-featured-card">
                         <div class="sub-featured-img">
@@ -532,7 +518,6 @@
                     </div>
                 `;
 
-                // Monta a seção de destaques completa com o novo grid interno
                 featuredSection.innerHTML = `<div class="featured-content-grid">${heroHtml + subFeaturedSectionHtml}</div>`;
 
             } else {
@@ -540,8 +525,7 @@
             }
 
 
-            // 2. Notícias Recentes (Exclui os destaques para não duplicar)
-            // Filtra os posts que NÃO são o destaque principal nem os sub-destaques
+            // 2. Notícias Recentes
             const featuredIds = [mainDestaque ? mainDestaque.id : null, ...subDestaques.map(p => p.id)];
             const newsForGrid = sortedPosts
                 .filter(p => !featuredIds.includes(p.id)) 
@@ -572,13 +556,11 @@
             }
         }
         
-        // Função para responsividade do menu (copiada de categoria.html)
         function toggleMenu() {
             var menu = document.getElementById("navMenu");
             menu.classList.toggle("active");
         }
 
-        // Executa a função ao carregar a página
         document.addEventListener('DOMContentLoaded', renderHomePage);
     </script>
 </body>
