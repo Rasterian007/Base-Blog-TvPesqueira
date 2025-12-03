@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title id="page-title">Categoria - TvPesqueira</title>
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&family=Montserrat:wght@800&display=swap" rel="stylesheet">
+    
+    <style>
+        /* --- ESTILOS GERAIS (MANTIDOS CONSISTENTES) --- */
+        :root {
+            --cor-primaria: #FFD700;
+            --cor-secundaria: #051e3e;
+            --cor-terciaria: #ffffff;
+            --cinza-fundo: #f4f5f7;
+            --texto-escuro: #1a1a1a;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Open Sans', sans-serif; background-color: var(--cinza-fundo); color: var(--texto-escuro); line-height: 1.6; }
+        a { text-decoration: none; color: inherit; transition: 0.3s; }
+        ul { list-style: none; }
+        img { width: 100%; height: auto; display: block; }
+        
+        /* HEADER */
+        header { background-color: var(--cor-secundaria); color: var(--cor-terciaria); position: sticky; top: 0; z-index: 1000; border-bottom: 4px solid var(--cor-primaria); }
+        /* MODIFICAÇÃO: Permite quebra para o menu móvel */
+        .header-main { 
+            max-width: 1200px; 
+            margin: 0 auto; 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            padding: 15px 20px; 
+            flex-wrap: wrap; /* Essencial para mobile */
+        }
+        .logo { font-family: 'Montserrat', sans-serif; font-size: 2rem; font-weight: 800; text-transform: uppercase; letter-spacing: -1px; display: flex; align-items: center; gap: 5px; }
+        .logo span.tv { background: var(--cor-primaria); color: var(--cor-secundaria); padding: 0 10px; border-radius: 4px; }
+        .nav-menu { display: flex; gap: 20px; }
+        .nav-menu a { font-weight: 600; font-size: 0.9rem; text-transform: uppercase; padding: 5px 0; border-bottom: 2px solid transparent; }
+        .nav-menu a:hover { color: var(--cor-primaria); border-bottom: 2px solid var(--cor-primaria); }
+        .btn-live { background: #cc0000; color: white; padding: 5px 15px; border-radius: 50px; font-weight: bold; font-size: 0.8rem; display: flex; align-items: center; gap: 5px; }
+
+        /* NOVO: Estilo para o botão de menu no mobile */
+        .menu-toggle { display: none; cursor: pointer; color: var(--cor-terciaria); font-size: 1.5rem; }
+
+        /* LAYOUT DA CATEGORIA - AGORA COM DUAS COLUNAS */
+        .container { max-width: 1200px; margin: 20px auto; padding: 0 20px; 
+            display: grid; 
+            grid-template-columns: 3fr 1fr; 
+            gap: 30px; 
+        }
+        .category-header { 
+            font-family: 'Montserrat', sans-serif; 
+            font-size: 2.5rem; 
+            color: var(--cor-secundaria); 
+            margin-bottom: 30px; 
+            border-bottom: 4px solid var(--cor-primaria); 
+            padding-bottom: 10px; 
+        }
+
+        /* SIDEBAR (WIDGETS) */
+        .sidebar { 
+            position: sticky; 
+            top: 90px; /* Abaixo do header */
+            align-self: flex-start;
+        }
+
+        .widget {
+            background: var(--cor-terciaria);
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            margin-bottom: 30px;
+        }
+
+        .widget h4 { 
+            font-family: 'Montserrat', sans-serif; 
+            font-size: 1.1rem; 
+            font-weight: 800; 
+            color: var(--cor-secundaria); 
+            margin-bottom: 15px; 
+            border-bottom: 2px solid var(--cor-primaria); 
+            padding-bottom: 5px; 
+        }
+
+        /* Widget de Anúncio */
+        .ad-widget {
+            background: #e0e0e0;
+            text-align: center;
+            padding: 10px; /* Reduzi padding */
+            border-radius: 8px;
+            margin-bottom: 20px;
+            border: 1px solid #ddd;
+        }
+        .ad-widget img { /* NOVO: Estilo para a imagem do anúncio */
+            margin: 10px auto 0;
+            max-width: 100%;
+            height: auto;
+            border-radius: 4px;
+        }
+        .ad-widget p { margin: 0; font-size: 0.8rem; color: #888; }
+        .ad-widget h4 { color: var(--cor-secundaria); font-size: 1.2rem; margin-top: 5px; margin-bottom: 0; font-family: 'Montserrat', sans-serif; font-weight: 800; }
+
+        /* CARD DE NOTÍCIA */
+        .news-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+        }
+        .post-card { 
+            background: var(--cor-terciaria); 
+            border-radius: 8px; 
+            overflow: hidden; 
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1); 
+            transition: transform 0.2s; 
+        }
+        .post-card:hover { transform: translateY(-5px); box-shadow: 0 6px 15px rgba(0,0,0,0.15); }
+        .post-card-img { height: 180px; overflow: hidden; }
+        .post-card-img img { width: 100%; height: 100%; object-fit: cover; }
+        .post-card-content { padding: 15px; }
+        .post-card-category { font-size: 0.75rem; font-weight: 700; color: #777; text-transform: uppercase; margin-bottom: 5px; }
+        .post-card-title { font-family: 'Montserrat', sans-serif; font-size: 1.1rem; margin-bottom: 10px; color: var(--texto-escuro); }
+        .post-card-excerpt { font-size: 0.9rem; color: #555; height: 40px; overflow: hidden; }
+        .post-card-meta { font-size: 0.75rem; color: #999; margin-top: 10px; }
+
+        /* FOOTER */
+        footer { background-color: var(--cor-secundaria); color: var(--cor-terciaria); padding: 30px 0; border-top: 4px solid var(--cor-primaria); }
+        .footer-content { max-width: 1200px; margin: 0 auto; padding: 0 20px; display: grid; grid-template-columns: repeat(4, 1fr); gap: 30px; }
+        .footer-col h4 { font-family: 'Montserrat', sans-serif; font-size: 1.2rem; margin-bottom: 15px; color: var(--cor-primaria); }
+        .footer-col a { display: block; margin-bottom: 8px; font-size: 0.9rem; opacity: 0.8; }
+        .footer-col a:hover { opacity: 1; color: var(--cor-terciaria); }
+
+        /* RESPONSIVIDADE */
+        @media (max-width: 992px) {
+            .container { 
+                grid-template-columns: 1fr; /* Coluna única */
+                padding: 0 10px;
+            }
+            .sidebar {
+                position: static;
+                order: 2; /* Publicidade abaixo das notícias */
+            }
+            .main-content {
+                order: 1;
+            }
+            .header-main {
+                 flex-wrap: wrap; 
+            }
+            .nav-menu {
+                display: none;
+                flex-direction: column;
+                width: 100%;
+                order: 4;
+            }
+            .nav-menu.active {
+                display: flex;
+            }
+            .menu-toggle { display: block; order: 3; }
+        }
+        @media (max-width: 600px) {
+            .news-grid { grid-template-columns: 1fr; } /* Apenas 1 coluna de notícias */
+            .category-header { font-size: 2rem; }
+            .footer-content { grid-template-columns: 1fr 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-main">
+            <a href="index.html" class="logo">
+                <span class="tv">TV</span>
+                <span class="nome">PESQUEIRA</span>
+            </a>
+            <div class="menu-toggle" onclick="toggleMenu()">&#9776;</div>
+            <nav class="nav-menu" id="navMenu">
+                <a href="index.html">Início</a>
+                <a href="categoria.html?cat=Cidade">Cidade</a>
+                <a href="categoria.html?cat=Polícia">Polícia</a>
+                <a href="categoria.html?cat=Política">Política</a>
+                <a href="categoria.html?cat=Esportes">Esportes</a>
+                <a href="categoria.html?cat=Economia">Economia</a>
+            </nav>
+            <a href="https://www.youtube.com/channel/UCpavRcgQQTc4hv4GSXHFS7A" target="_blank" class="btn-live">
+                <i class="fas fa-video"></i> AO VIVO
+            </a>
+        </div>
+    </header>
+
+    <main class="container">
+        <section class="main-content">
+            <h1 class="category-header" id="category-title">Categoria: Carregando...</h1>
+            <div class="news-grid" id="news-grid">
+                <p style="grid-column: 1 / -1; text-align: center;">Carregando notícias...</p>
+            </div>
+        </section>
+
+        <aside class="sidebar">
+            <div class="ad-widget">
+                <h4>ANÚNCIO</h4>
+                <p>Espaço Publicitário 300x600</p>
+                <img src="https://via.placeholder.com/300x600?text=ANUNCIE+AQUI" alt="Banner Publicitário Sidebar" style="margin-top: 15px; border: 1px solid #ccc;">
+            </div>
+            
+            <div class="widget">
+                <h4>MAIS LIDAS</h4>
+                <ul class="top-list">
+                    <li><a href="#">Título de outra notícia popular...</a></li>
+                    <li><a href="#">Outro título de notícia...</a></li>
+                    </ul>
+            </div>
+        </aside>
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-col">
+                <div class="logo">
+                    <span class="tv">TV</span>
+                    <span class="nome">PESQUEIRA</span>
+                </div>
+                <p style="font-size: 0.9rem; opacity: 0.7;">Levando a verdade dos fatos até você. Jornalismo independente e comprometido com a região.</p>
+            </div>
+            <div class="footer-col">
+                <h4>Editorias</h4>
+                <a href="categoria.html?cat=Cidade">Cidade</a>
+                <a href="categoria.html?cat=Polícia">Polícia</a>
+                <a href="categoria.html?cat=Política">Política</a>
+                <a href="categoria.html?cat=Economia">Economia</a>
+                <a href="categoria.html?cat=Cultura">Cultura</a>
+            </div>
+            <div class="footer-col">
+    <h4>Institucional</h4>
+    <a href="quem-somos.html">Quem Somos</a>
+    <a href="anuncie.html">Anuncie</a>
+</div>
+            <div class="footer-col">
+                <h4>Redes Sociais</h4>
+                <a href="https://www.instagram.com/tvpesqueira" target="_blank">Instagram</a>
+                <a href="https://www.facebook.com/tvpesqueira" target="_blank">Facebook</a>
+                <a href="https://www.youtube.com/@tvpesqueira" target="_blank">Youtube</a>
+                <a href="https://twitter.com/tvpesqueira" target="_blank">Twitter/X</a>
+            </div>
+        </div>
+        <div style="text-align: center; margin-top: 30px; font-size: 0.8rem; opacity: 0.5;">
+            &copy; 2023 TvPesqueira. Todos os direitos reservados.
+        </div>
+    </footer>
+
+    <script>
+        // Funções de formatação e loadPosts (copiadas do index.html para consistência)
+        const DEFAULT_POSTS = [
+            { id: 1, title: "Prefeito de Pesqueira Anuncia Novos Projetos", description: "Obras de pavimentação e saneamento básico começam...", author: "Redação", date: "2025-12-01T10:00:00", category: "Política", img: "https://via.placeholder.com/1200x600.png?text=Noticia+Padrao+1", status: "published" },
+            { id: 2, title: "Festival de Cultura Local Bate Recorde de Público", description: "Edição 2025 do festival atrai milhares de visitantes...", author: "Maria Silva", date: "2025-11-29T18:30:00", category: "Cultura", img: "https://via.placeholder.com/300x180.png?text=Noticia+Padrao+2", status: "published" },
+            { id: 3, title: "Comércio Pesqueirense Projeta Alta nas Vendas", description: "Expectativa de crescimento de 15%...", author: "João Batista", date: "2025-11-28T09:15:00", category: "Economia", img: "https://via.placeholder.com/300x180.png?text=Noticia+Padrao+3", status: "published" },
+            { id: 4, title: "Nova Delegacia Inaugurada no Centro", description: "Melhoria na segurança pública local...", author: "Redação", date: "2025-11-27T14:00:00", category: "Polícia", img: "https://via.placeholder.com/300x180.png?text=Noticia+Padrao+4", status: "published" },
+            { id: 5, title: "Time Local Vence o Campeonato Regional", description: "Vitória emocionante garante a taça...", author: "Esportes PE", date: "2025-11-26T22:00:00", category: "Esportes", img: "https://via.placeholder.com/300x180.png?text=Noticia+Padrao+5", status: "published" },
+        ];
+        const POSTS_STORAGE_KEY = 'tvpesqueira_posts';
+        function loadPosts() {
+            const postsJson = localStorage.getItem(POSTS_STORAGE_KEY);
+            let posts;
+            try {
+                posts = JSON.parse(postsJson);
+            } catch (e) {
+                console.error("Erro ao carregar posts do localStorage:", e);
+            }
+            return (Array.isArray(posts) && posts.length > 0) ? posts : DEFAULT_POSTS;
+        }
+        function formatDate(dateString) {
+            if (!dateString) return 'Data Desconhecida';
+            try {
+                const date = new Date(dateString);
+                if (isNaN(date)) return 'Data Inválida';
+                
+                const options = { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' };
+                return date.toLocaleDateString('pt-BR', options);
+            } catch (e) {
+                return 'Erro na Data';
+            }
+        }
+        // FIM das Funções de formatação e loadPosts
+
+        function renderCategoryPage() {
+            // 1. OBTÉM A CATEGORIA DA URL
+            const urlParams = new URLSearchParams(window.location.search);
+            const targetCategory = urlParams.get('cat') || 'Geral';
+
+            // 2. ATUALIZA TÍTULOS
+            document.getElementById('category-title').textContent = `Categoria: ${targetCategory}`;
+            document.getElementById('page-title').textContent = `${targetCategory} - TvPesqueira`;
+
+            // 3. CARREGA TODOS OS POSTS SALVOS
+            const allPosts = loadPosts(); 
+            
+            // 4. FILTRA APENAS OS POSTS DA CATEGORIA ALVO E QUE ESTÃO PUBLICADOS
+            const filteredPosts = allPosts
+                .filter(p => p.category === targetCategory && p.status === 'published')
+                .sort((a, b) => new Date(b.date) - new Date(a.date)); 
+
+            const gridElement = document.getElementById('news-grid');
+
+            if (filteredPosts.length > 0) {
+                const postsHtml = filteredPosts.map(post => `
+                    <a href="post.html?id=${post.id}" class="post-card">
+                        <div class="post-card-img">
+                            <img src="${post.img || 'https://via.placeholder.com/300x180.png?text=Sem+Imagem'}" alt="${post.title}" onerror="this.onerror=null; this.src='https://via.placeholder.com/300x180.png?text=Sem+Imagem'">
+                        </div>
+                        <div class="post-card-content">
+                            <div class="post-card-category">${post.category}</div>
+                            <h2 class="post-card-title">${post.title}</h2>
+                            <p class="post-card-excerpt">${post.description}</p>
+                            <p class="post-card-meta">Por ${post.author} - ${formatDate(post.date)}</p>
+                        </div>
+                    </a>
+                `).join(''); 
+                
+                gridElement.innerHTML = postsHtml;
+
+            } else {
+                // 5. MENSAGEM SE NÃO HOUVER POSTS
+                gridElement.innerHTML = `
+                    <div style="grid-column: 1 / -1; padding: 20px; text-align: center; background: #fff;">
+                        <p style="font-size: 1.2rem; color: #555;">😔 Não há notícias publicadas na categoria **${targetCategory}** no momento.</p>
+                        <p style="margin-top: 10px; font-size: 0.9rem;">Verifique o Dashboard para publicar novos posts.</p>
+                    </div>
+                `;
+            }
+        }
+
+        // NOVO: Função para responsividade do menu (usada no botão hamburguer)
+        function toggleMenu() {
+            var menu = document.getElementById("navMenu");
+            menu.classList.toggle("active");
+        }
+
+
+        // 6. EXECUTA A FUNÇÃO AO CARREGAR A PÁGINA
+        document.addEventListener('DOMContentLoaded', renderCategoryPage);
+    </script>
+</body>
+</html>

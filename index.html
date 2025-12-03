@@ -1,0 +1,583 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title id="page-title">Início - TvPesqueira</title>
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&family=Montserrat:wght@800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    
+    <style>
+        /* --- ESTILOS GERAIS (MANTIDOS CONSISTENTES) --- */
+        :root {
+            --cor-primaria: #FFD700;
+            --cor-secundaria: #051e3e;
+            --cor-terciaria: #ffffff;
+            --cinza-fundo: #f4f5f7;
+            --texto-escuro: #1a1a1a;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Open Sans', sans-serif; background-color: var(--cinza-fundo); color: var(--texto-escuro); line-height: 1.6; }
+        a { text-decoration: none; color: inherit; transition: 0.3s; }
+        ul { list-style: none; }
+        img { width: 100%; height: auto; display: block; }
+        
+        .container { max-width: 1200px; margin: 20px auto; padding: 0 20px; }
+
+        /* --- HEADER --- (Mantido) */
+        header { background-color: var(--cor-secundaria); color: var(--cor-terciaria); position: sticky; top: 0; z-index: 1000; border-bottom: 4px solid var(--cor-primaria); }
+        .header-main { 
+            max-width: 1200px; 
+            margin: 0 auto; 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            padding: 15px 20px; 
+            flex-wrap: wrap; 
+        }
+        .logo { font-family: 'Montserrat', sans-serif; font-size: 2rem; font-weight: 800; text-transform: uppercase; letter-spacing: -1px; display: flex; align-items: center; gap: 5px; }
+        .logo span.tv { background: var(--cor-primaria); color: var(--cor-secundaria); padding: 0 10px; border-radius: 4px; }
+        .nav-menu { display: flex; gap: 20px; }
+        .nav-menu a { font-weight: 600; font-size: 0.9rem; text-transform: uppercase; padding: 5px 0; border-bottom: 2px solid transparent; }
+        .nav-menu a:hover, .nav-menu a.active { color: var(--cor-primaria); border-bottom: 2px solid var(--cor-primaria); }
+        .btn-live { background: #cc0000; color: white; padding: 5px 15px; border-radius: 50px; font-weight: bold; font-size: 0.8rem; display: flex; align-items: center; gap: 5px; }
+        .menu-toggle { display: none; cursor: pointer; color: var(--cor-terciaria); font-size: 1.5rem; }
+
+        /* --- GRID PRINCIPAL E BARRA LATERAL (Mantido) --- */
+        .container-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr; /* Conteúdo principal (2/3) e Sidebar (1/3) */
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        .main-content {
+            grid-column: 1 / 2;
+        }
+
+        .sidebar {
+            grid-column: 2 / 3;
+        }
+
+        /* --- ESTILOS DE PUBLICIDADE NA BARRA LATERAL (Mantido) --- */
+        .ad-unit {
+            background: var(--cor-terciaria);
+            border-radius: 8px; /* Alterado de 23px para 8px para consistência */
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+            padding: 15px;
+            text-align: center;
+        }
+        
+        .ad-unit h4 {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.8rem;
+            color: #888;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+        }
+        /* Adicionando estilo específico para a imagem de publicidade */
+        .ad-unit a img {
+            border-radius: 4px;
+        }
+
+        /* Container responsivo para o vídeo do YouTube */
+        .ad-video-container {
+            position: relative;
+            width: 100%;
+            padding-top: 56.25%; /* 16:9 Aspect Ratio (9/16 * 100) */
+            height: 0;
+            overflow: hidden;
+            border-radius: 6px;
+        }
+
+        .ad-video-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: 0;
+        }
+
+        /* --- DESTAQUES (CORRIGIDO/APERFEIÇOADO) --- */
+        .featured-section { 
+            display: grid; 
+            grid-template-columns: 1fr; 
+            gap: 20px; 
+            margin-bottom: 40px; 
+        }
+
+        /* NOVO: Grid interno para Hero e Sub-Destaques */
+        .featured-content-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr; /* Hero (2/3) | Sub-Destaques (1/3) */
+            gap: 20px;
+        }
+
+        /* Destaque Principal (Hero) */
+        .hero-post {
+            background: var(--cor-terciaria);
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            position: relative;
+        }
+        /* Assegura que o hero ocupe a primeira coluna do grid interno */
+        .hero-post-container {
+            grid-column: 1 / 2;
+        }
+        
+        .hero-img-container {
+            height: 400px;
+            overflow: hidden;
+        }
+
+        .hero-img-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.4s ease;
+        }
+        .hero-post:hover .hero-img-container img {
+            transform: scale(1.05);
+        }
+
+        .hero-content {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 20px;
+            background: linear-gradient(to top, rgba(0,0,0,0.9), rgba(0,0,0,0.0));
+            color: var(--cor-terciaria);
+        }
+
+        .hero-category { 
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.9rem; 
+            font-weight: 700; 
+            color: var(--cor-primaria); 
+            text-transform: uppercase; 
+            margin-bottom: 10px;
+        }
+        .hero-title { 
+            font-family: 'Montserrat', sans-serif; 
+            font-size: 2.2rem; 
+            line-height: 1.2;
+            margin-bottom: 10px;
+        }
+        .hero-excerpt { font-size: 1rem; color: #ddd; }
+        .hero-meta { font-size: 0.8rem; color: #bbb; margin-top: 10px; }
+
+        /* Sub-Destaques */
+        .sub-featured-list-container {
+            grid-column: 2 / 3; /* Ocupa a segunda coluna do grid interno */
+        }
+
+        .sub-featured-list {
+            display: flex; /* Alterado para flex para dispor em coluna (o card já é flex-direction: column no mobile) */
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .sub-featured-card {
+            background: var(--cor-terciaria);
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            display: flex;
+            overflow: hidden;
+            transition: box-shadow 0.2s;
+        }
+        .sub-featured-card:hover { box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+
+        .sub-featured-img {
+            width: 40%;
+            flex-shrink: 0;
+            height: 90px; /* Reduzido um pouco para caber 2 sub-destaques confortavelmente */
+            overflow: hidden;
+        }
+        .sub-featured-img img { object-fit: cover; height: 100%; }
+        
+        .sub-featured-content {
+            padding: 10px;
+            flex-grow: 1;
+        }
+        .sub-featured-category { font-size: 0.7rem; font-weight: 700; color: #777; text-transform: uppercase; margin-bottom: 3px; }
+        .sub-featured-title { font-family: 'Montserrat', sans-serif; font-size: 0.95rem; line-height: 1.3; margin: 0; max-height: 48px; overflow: hidden; }
+        .sub-featured-meta { font-size: 0.7rem; color: #999; margin-top: 5px; }
+
+        /* --- NOTÍCIAS RECENTES (GRID - Mantido) --- */
+        .section-header { 
+            font-family: 'Montserrat', sans-serif; 
+            font-size: 1.8rem; 
+            color: var(--cor-secundaria); 
+            margin-bottom: 20px; 
+            border-bottom: 3px solid var(--cor-primaria); 
+            padding-bottom: 5px; 
+        }
+
+        .news-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+
+        .post-card { 
+            background: var(--cor-terciaria); 
+            border-radius: 8px; 
+            overflow: hidden; 
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1); 
+            transition: transform 0.2s; 
+        }
+        .post-card:hover { transform: translateY(-5px); box-shadow: 0 6px 15px rgba(0,0,0,0.15); }
+        .post-card-img { height: 180px; overflow: hidden; }
+        .post-card-img img { width: 100%; height: 100%; object-fit: cover; }
+        .post-card-content { padding: 15px; }
+        .post-card-category { font-size: 0.75rem; font-weight: 700; color: #777; text-transform: uppercase; margin-bottom: 5px; }
+        .post-card-title { font-family: 'Montserrat', sans-serif; font-size: 1.1rem; margin-bottom: 10px; color: var(--texto-escuro); }
+        .post-card-excerpt { font-size: 0.9rem; color: #555; height: 40px; overflow: hidden; }
+        .post-card-meta { font-size: 0.75rem; color: #999; margin-top: 10px; }
+
+        /* --- FOOTER (Mantido) --- */
+        footer { background-color: var(--cor-secundaria); color: var(--cor-terciaria); padding: 30px 0; border-top: 4px solid var(--cor-primaria); }
+        .footer-content { max-width: 1200px; margin: 0 auto; padding: 0 20px; display: grid; grid-template-columns: repeat(4, 1fr); gap: 30px; }
+        .footer-col h4 { font-family: 'Montserrat', sans-serif; font-size: 1.2rem; margin-bottom: 15px; color: var(--cor-primaria); }
+        .footer-col a { display: block; margin-bottom: 8px; font-size: 0.9rem; opacity: 0.8; }
+        .footer-col a:hover { opacity: 1; color: var(--cor-terciaria); }
+        
+        /* --- RESPONSIVIDADE --- */
+        @media (max-width: 992px) {
+            .container { padding: 0 10px; }
+            
+            /* Ajuste do Grid Principal: Coluna única no tablet/mobile */
+            .container-grid {
+                grid-template-columns: 1fr; 
+                gap: 20px;
+            }
+            .main-content, .sidebar {
+                grid-column: 1 / -1; /* Ocupa a largura total */
+            }
+
+            /* NOVO: Destaque Principal e Sub-Destaques empilhados no tablet */
+            .featured-content-grid {
+                grid-template-columns: 1fr; 
+            }
+            .hero-post-container {
+                grid-column: 1 / -1;
+            }
+            .sub-featured-list-container {
+                grid-column: 1 / -1;
+            }
+            .sub-featured-list {
+                flex-direction: row; /* Volta a ser row no tablet para aproveitar o espaço */
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); /* 2 colunas no tablet */
+            }
+            .hero-img-container { height: 300px; } 
+            .hero-title { font-size: 1.8rem; }
+            .sub-featured-card { flex-direction: row; } /* Volta para a linha no tablet */
+            .sub-featured-img { width: 40%; height: 90px; } /* Mantém imagem ao lado do texto */
+            
+            /* Grid de Notícias */
+            .news-grid { grid-template-columns: repeat(2, 1fr); }
+            
+            /* Menu */
+            .header-main { flex-wrap: wrap; }
+            .nav-menu {
+                display: none;
+                flex-direction: column;
+                width: 100%;
+                order: 4;
+            }
+            .nav-menu.active { display: flex; }
+            .menu-toggle { display: block; order: 3; }
+        }
+
+        @media (max-width: 600px) {
+            .hero-content { padding: 10px; }
+            .hero-title { font-size: 1.4rem; }
+            .hero-excerpt { display: none; } 
+            .news-grid { grid-template-columns: 1fr; } 
+            .section-header { font-size: 1.5rem; }
+            .footer-content { grid-template-columns: 1fr 1fr; }
+
+            /* Mobile: Sub-Destaques empilhados */
+            .sub-featured-list {
+                grid-template-columns: 1fr;
+            }
+            .sub-featured-card { flex-direction: column; } /* Volta para a coluna no mobile */
+            .sub-featured-img { width: 100%; height: 150px; } /* Imagem em cima do texto no mobile */
+
+            /* Sidebar oculta: Mantido como estava */
+            .sidebar { 
+                display: none; 
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-main">
+            <a href="index.html" class="logo">
+                <span class="tv">TV</span>
+                <span class="nome">PESQUEIRA</span>
+            </a>
+            <div class="menu-toggle" onclick="toggleMenu()">&#9776;</div>
+            <nav class="nav-menu" id="navMenu">
+                <a href="categoria.html?cat=Cidade">Cidade</a>
+                <a href="categoria.html?cat=Polícia">Polícia</a>
+                <a href="categoria.html?cat=Política">Política</a>
+                <a href="categoria.html?cat=Esportes">Esportes</a>
+                <a href="categoria.html?cat=Economia">Economia</a>
+            </nav>
+            <a href="https://www.youtube.com/channel/UCpavRcgQQTc4hv4GSXHFS7A" target="_blank" class="btn-live">
+                <i class="fas fa-video"></i> AO VIVO
+            </a>
+        </div>
+    </header>
+
+    <main class="container">
+        <div class="container-grid">
+            
+            <div class="main-content">
+                <section class="featured-section" id="featured-section">
+                    <p style="grid-column: 1 / -1; text-align: center; padding: 50px;">Carregando Destaques...</p>
+                </section>
+
+                <hr>
+
+                <section class="recent-news-section">
+                    <h2 class="section-header">Últimas Notícias</h2>
+                    <div class="news-grid" id="recent-news-grid">
+                        <p style="grid-column: 1 / -1; text-align: center;">Carregando notícias...</p>
+                    </div>
+                </section>
+            </div>
+            
+            <aside class="sidebar">
+
+                <div class="ad-unit">
+                    <h4>ASSISTA NO YOUTUBE</h4>
+                    <div class="ad-video-container">
+                        <iframe 
+                            src="https://www.youtube.com/embed/YB-fz1SV95Q" 
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                            allowfullscreen>
+                        </iframe>
+                    </div>
+                </div>
+
+                <div class="ad-unit">
+                    <h4>PUBLICIDADE</h4>
+                    <a href="LINK_DO_ANUNCIO_1" target="_blank">
+                        <img src="https://i.ibb.co/0yJ0tnD8/photo2jpg.png" alt="Anúncio 1 - Patrocinador">
+                    </a>
+                </div>
+                <div class="ad-unit">
+                    <h4>APOIO</h4>
+                    <a href="LINK_DO_ANUNCIO_2" target="_blank">
+                        <img src="https://i.ibb.co/GQcRC8WZ/entrada-da-cidade.png" alt="Anúncio 2 - Patrocinador">
+                    </a>
+                </div>
+                
+            </aside>
+            
+        </div>
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-col">
+                <div class="logo">
+                    <span class="tv">TV</span>
+                    <span class="nome">PESQUEIRA</span>
+                </div>
+                <p style="font-size: 0.9rem; opacity: 0.7;">Levando a verdade dos fatos até você. Jornalismo independente e comprometido com a região.</p>
+            </div>
+            <div class="footer-col">
+                <h4>Editorias</h4>
+                <a href="categoria.html?cat=Cidade">Cidade</a>
+                <a href="categoria.html?cat=Polícia">Polícia</a>
+                <a href="categoria.html?cat=Política">Política</a>
+                <a href="categoria.html?cat=Economia">Economia</a>
+                <a href="categoria.html?cat=Cultura">Cultura</a>
+            </div>
+            <div class="footer-col">
+    <h4>Institucional</h4>
+    <a href="quem-somos.html">Quem Somos</a>
+    <a href="anuncie.html">Anuncie</a>
+</div>
+            <div class="footer-col">
+                <h4>Redes Sociais</h4>
+                <a href="https://www.instagram.com/tvpesqueira" target="_blank">Instagram</a>
+                <a href="https://www.facebook.com/tvpesqueira" target="_blank">Facebook</a>
+                <a href="https://www.youtube.com/@tvpesqueira" target="_blank">Youtube</a>
+                <a href="https://twitter.com/tvpesqueira" target="_blank">Twitter/X</a>
+            </div>
+        </div>
+        <div style="text-align: center; margin-top: 30px; font-size: 0.8rem; opacity: 0.5;">
+            &copy; 2023 TvPesqueira. Todos os direitos reservados.
+        </div>
+    </footer>
+
+    <script>
+        // --- FUNÇÕES DE DADOS (Mantidas) ---
+        const DEFAULT_POSTS = [
+            // Posts padrão atualizados para incluir o campo 'destaque'
+            { id: 1, title: "Prefeito de Pesqueira Anuncia Novos Projetos e Recortes de Gastos", description: "Obras de pavimentação e saneamento básico começam. Expectativa é de investimento recorde na zona rural. [Leia Mais...]", author: "Redação", date: "2025-12-02T10:00:00", category: "Política", img: "https://via.placeholder.com/1200x600.png?text=Prefeitura+Anuncia+Projetos+Hero", status: "published", destaque: "main" }, // DESTAQUE PRINCIPAL
+            { id: 2, title: "Festival de Cultura Local Bate Recorde de Público e Recebe Elogios", description: "Edição 2025 do festival atrai milhares de visitantes e destaca artistas locais e regionais.", author: "Maria Silva", date: "2025-12-01T18:30:00", category: "Cultura", img: "https://via.placeholder.com/300x180.png?text=Festival+Cultura+Sub-Destaque", status: "published", destaque: "sub" }, // SUB-DESTAQUE
+            { id: 3, title: "Comércio Pesqueirense Projeta Alta nas Vendas de Final de Ano", description: "Expectativa de crescimento de 15% em relação ao ano anterior devido a novos investimentos.", author: "João Batista", date: "2025-12-01T09:15:00", category: "Economia", img: "https://via.placeholder.com/300x180.png?text=Comercio+Vendas", status: "published", destaque: null },
+            { id: 4, title: "Nova Delegacia Inaugurada no Centro Aumenta a Segurança Pública", description: "O novo prédio oferece melhores condições de trabalho e agiliza o atendimento à população.", author: "Redação", date: "2025-11-30T14:00:00", category: "Polícia", img: "https://via.placeholder.com/300x180.png?text=Nova+Delegacia", status: "published", destaque: null },
+            { id: 5, title: "Time Local Vence o Campeonato Regional e Traz a Taça para Casa", description: "Vitória emocionante nos pênaltis garante o título após uma partida acirrada e cheia de lances.", author: "Esportes PE", date: "2025-11-29T22:00:00", category: "Esportes", img: "https://via.placeholder.com/300x180.png?text=Time+Campeao+Sub-Destaque", status: "published", destaque: "sub" }, // SUB-DESTAQUE
+            { id: 6, title: "Alerta de Chuvas: Defesa Civil Pede Cuidado em Áreas de Risco", description: "Previsão indica chuvas fortes nas próximas 48h. Evite áreas de alagamento.", author: "Clima Agora", date: "2025-11-28T16:00:00", category: "Cidade", img: "https://via.placeholder.com/300x180.png?text=Alerta+Chuvas", status: "published", destaque: null },
+            { id: 7, title: "Jovem Pesqueirense Ganha Destaque Nacional em Competição de Robótica", description: "O estudante representará o estado na próxima fase da competição em Brasília.", author: "Tecnologia", date: "2025-11-27T08:45:00", category: "Educação", img: "https://via.placeholder.com/300x180.png?text=Jovem+Robotica", status: "published", destaque: null },
+        ];
+        const POSTS_STORAGE_KEY = 'tvpesqueira_posts';
+
+        function loadPosts() {
+            const postsJson = localStorage.getItem(POSTS_STORAGE_KEY);
+            let posts;
+            try {
+                posts = JSON.parse(postsJson);
+            } catch (e) {
+                console.error("Erro ao carregar posts do localStorage:", e);
+            }
+            // Se não houver posts salvos ou der erro, salva os posts padrão e retorna eles
+            if (!Array.isArray(posts) || posts.length === 0) {
+                 savePosts(DEFAULT_POSTS);
+                 return DEFAULT_POSTS;
+            }
+            return posts;
+        }
+
+        // Função para salvar posts (incluída para o link com o admin.html)
+        function savePosts(posts) {
+            localStorage.setItem(POSTS_STORAGE_KEY, JSON.stringify(posts));
+        }
+
+        function formatDate(dateString) {
+            if (!dateString) return 'Data Desconhecida';
+            try {
+                const date = new Date(dateString);
+                if (isNaN(date)) return 'Data Inválida';
+                
+                const options = { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' };
+                return date.toLocaleDateString('pt-BR', options);
+            } catch (e) {
+                return 'Erro na Data';
+            }
+        }
+        // --- FIM DAS FUNÇÕES DE DADOS ---
+
+        // --- FUNÇÃO DE RENDERIZAÇÃO DA PÁGINA INICIAL (CORRIGIDA) ---
+        function renderHomePage() {
+            const allPosts = loadPosts().filter(p => p.status === 'published'); // Apenas publicados
+            
+            // Ordena do mais recente para o mais antigo
+            const sortedPosts = allPosts.sort((a, b) => new Date(b.date) - new Date(a.date));
+
+            // 1. Destaques (Hero e Sub-Destaques)
+            let mainDestaque = sortedPosts.find(p => p.destaque === 'main');
+            let subDestaques = sortedPosts.filter(p => p.destaque === 'sub').slice(0, 2); 
+            
+            // Se não houver 'main', usa o primeiro post
+            if (!mainDestaque && sortedPosts.length > 0) {
+                 mainDestaque = sortedPosts[0];
+            }
+
+            const featuredSection = document.getElementById('featured-section');
+            featuredSection.innerHTML = ''; 
+
+            if (mainDestaque) {
+                // HTML do Destaque Principal
+                const heroHtml = `
+                    <div class="hero-post-container">
+                        <a href="post.html?id=${mainDestaque.id}" class="hero-post">
+                            <div class="hero-img-container">
+                                <img src="${mainDestaque.img || 'https://via.placeholder.com/1200x600.png?text=Sem+Imagem+Principal'}" alt="${mainDestaque.title}" onerror="this.onerror=null; this.src='https://via.placeholder.com/1200x600.png?text=Sem+Imagem+Principal'">
+                            </div>
+                            <div class="hero-content">
+                                <div class="hero-category">${mainDestaque.category}</div>
+                                <h2 class="hero-title">${mainDestaque.title}</h2>
+                                <p class="hero-excerpt">${mainDestaque.description}</p>
+                                <p class="hero-meta">Por ${mainDestaque.author} - ${formatDate(mainDestaque.date)}</p>
+                            </div>
+                        </a>
+                    </div>
+                `;
+                
+                // HTML dos Sub-Destaques
+                let subDestaquesHtml = subDestaques.map(post => `
+                    <a href="post.html?id=${post.id}" class="sub-featured-card">
+                        <div class="sub-featured-img">
+                             <img src="${post.img || 'https://via.placeholder.com/300x180.png?text=Sem+Imagem+Sub'}" alt="${post.title}" onerror="this.onerror=null; this.src='https://via.placeholder.com/300x180.png?text=Sem+Imagem+Sub'">
+                        </div>
+                        <div class="sub-featured-content">
+                            <div class="sub-featured-category">${post.category}</div>
+                            <h3 class="sub-featured-title">${post.title}</h3>
+                            <p class="sub-featured-meta">${formatDate(post.date)}</p>
+                        </div>
+                    </a>
+                `).join('');
+
+                const subFeaturedSectionHtml = `
+                    <div class="sub-featured-list-container">
+                        <div class="sub-featured-list">
+                            ${subDestaquesHtml}
+                        </div>
+                    </div>
+                `;
+
+                // Monta a seção de destaques completa com o novo grid interno
+                featuredSection.innerHTML = `<div class="featured-content-grid">${heroHtml + subFeaturedSectionHtml}</div>`;
+
+            } else {
+                 featuredSection.innerHTML = `<p style="grid-column: 1 / -1; text-align: center; padding: 50px;">😔 Não há posts publicados para exibir como Destaque no momento.</p>`;
+            }
+
+
+            // 2. Notícias Recentes (Exclui os destaques para não duplicar)
+            // Filtra os posts que NÃO são o destaque principal nem os sub-destaques
+            const featuredIds = [mainDestaque ? mainDestaque.id : null, ...subDestaques.map(p => p.id)];
+            const newsForGrid = sortedPosts
+                .filter(p => !featuredIds.includes(p.id)) 
+                .slice(0, 6); 
+
+            const gridElement = document.getElementById('recent-news-grid');
+            gridElement.innerHTML = ''; 
+            
+            if (newsForGrid.length > 0) {
+                const postsHtml = newsForGrid.map(post => `
+                    <a href="post.html?id=${post.id}" class="post-card">
+                        <div class="post-card-img">
+                            <img src="${post.img || 'https://via.placeholder.com/300x180.png?text=Sem+Imagem'}" alt="${post.title}" onerror="this.onerror=null; this.src='https://via.placeholder.com/300x180.png?text=Sem+Imagem'">
+                        </div>
+                        <div class="post-card-content">
+                            <div class="post-card-category">${post.category}</div>
+                            <h2 class="post-card-title">${post.title}</h2>
+                            <p class="post-card-excerpt">${post.description}</p>
+                            <p class="post-card-meta">Por ${post.author} - ${formatDate(post.date)}</p>
+                        </div>
+                    </a>
+                `).join(''); 
+                
+                gridElement.innerHTML = postsHtml;
+
+            } else {
+                gridElement.innerHTML = `<p style="grid-column: 1 / -1; padding: 20px; text-align: center; color: #555;">Não há outras notícias publicadas no momento.</p>`;
+            }
+        }
+        
+        // Função para responsividade do menu (copiada de categoria.html)
+        function toggleMenu() {
+            var menu = document.getElementById("navMenu");
+            menu.classList.toggle("active");
+        }
+
+        // Executa a função ao carregar a página
+        document.addEventListener('DOMContentLoaded', renderHomePage);
+    </script>
+</body>
+</html>

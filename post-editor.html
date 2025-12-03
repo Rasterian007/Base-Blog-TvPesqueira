@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Criar/Editar Post | TvPesqueira Admin</title>
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&family=Montserrat:wght@800&display=swap" rel="stylesheet">
+    <script src="access-control.js" defer></script> 
+
+    <style>
+        /* ESTILOS PADRÃO (SIMILARES AO DASHBOARD) */
+        :root { --cor-primaria: #FFD700; --cor-secundaria: #051e3e; --cor-terciaria: #ffffff; --cinza-fundo: #f0f2f5; --texto-escuro: #333; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Open Sans', sans-serif; background-color: var(--cinza-fundo); color: var(--texto-escuro); display: flex; min-height: 100vh; }
+        a { text-decoration: none; color: inherit; transition: 0.2s; }
+        .sidebar { width: 250px; background-color: var(--cor-secundaria); color: var(--cor-terciaria); flex-shrink: 0; padding: 20px 0; box-shadow: 2px 0 5px rgba(0,0,0,0.1); }
+        .sidebar-logo { padding: 0 20px 20px 20px; border-bottom: 1px solid rgba(255, 255, 255, 0.1); margin-bottom: 20px; }
+        .sidebar-logo a { font-family: 'Montserrat', sans-serif; font-size: 1.5rem; font-weight: 800; display: block; }
+        .sidebar-logo span.tv { color: var(--cor-primaria); }
+        .sidebar nav ul li a { display: flex; align-items: center; padding: 12px 20px; font-size: 0.95rem; color: var(--texto-claro); gap: 10px; }
+        .sidebar nav ul li.active a { background-color: rgba(255, 255, 255, 0.1); color: var(--cor-primaria); border-left: 3px solid var(--cor-primaria); }
+        .main-content { flex-grow: 1; display: flex; flex-direction: column; }
+        .top-bar { background: var(--cor-terciaria); padding: 15px 30px; box-shadow: 0 1px 4px rgba(0,0,0,0.05); display: flex; justify-content: space-between; align-items: center; }
+        .top-bar h1 { font-size: 1.5rem; color: var(--cor-secundaria); }
+        .user-info { display: flex; align-items: center; gap: 15px; }
+        .user-info span { font-weight: 600; color: var(--texto-escuro); }
+        .btn-logout { background: #e74c3c; color: white; padding: 8px 15px; border: none; border-radius: 4px; cursor: pointer; font-weight: 600; }
+        .btn-logout:hover { background: #c0392b; }
+        .editor-container { padding: 30px; background-color: var(--cinza-fundo); flex-grow: 1; }
+        
+        /* FORMULÁRIO */
+        .post-form-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr; /* Coluna do conteúdo e Coluna da Sidebar/Publicação */
+            gap: 30px;
+        }
+
+        .editor-main, .editor-sidebar {
+            background: var(--cor-terciaria);
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+
+        .form-group { margin-bottom: 20px; }
+        
+        label { 
+            display: block; 
+            font-weight: 700; 
+            margin-bottom: 5px; 
+            color: var(--cor-secundaria);
+        }
+
+        input[type="text"], 
+        select, 
+        textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 1rem;
+            color: var(--texto-escuro);
+        }
+        
+        textarea { resize: vertical; min-height: 150px; }
+        #post-content { min-height: 300px; }
+
+        /* Estilo da Prévia de Imagem */
+        #image-preview {
+            border: 1px dashed #ccc;
+            background: #f9f9f9;
+            min-height: 150px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: #777;
+            border-radius: 4px;
+            overflow: hidden; /* Garante que a imagem preenche e corta */
+        }
+        #image-preview img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover; /* Ajusta a imagem para preencher o container */
+            display: block; /* Garante que a imagem é um bloco */
+        } 
+        /* FIM DA CORREÇÃO CSS */
+
+        .btn-action { width: 100%; padding: 12px; font-weight: 700; border: none; border-radius: 4px; cursor: pointer; margin-top: 5px; }
+        .btn-publish { background: #2ecc71; color: white; }
+        .btn-draft { background: #f39c12; color: white; }
+        
+        .btn-primary { background: var(--cor-primaria); color: var(--cor-secundaria); font-weight: 700; padding: 10px 20px; border-radius: 4px; text-transform: uppercase; }
+        
+        .destaque-option { padding: 10px; background: #fff; border: 1px solid #eee; border-radius: 4px; margin-top: 10px; }
+        .destaque-option label { font-weight: normal; color: #555; margin-left: 5px; display: inline; }
+        .destaque-option input { width: auto; margin-right: 5px; }
+
+        @media (max-width: 900px) {
+            .post-form-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="sidebar">
+        <div class="sidebar-logo">
+            <a href="admin.html"><span class="tv">TV</span>PESQUEIRA</a>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="admin.html">🏠 <span>Dashboard</span></a></li>
+                <li class="active"><a href="postagens.html">📝 <span>Postagens</span></a></li>
+                <li><a href="paginas-estaticas.html">📄 <span>Páginas Estáticas</span></a></li>
+                <li><a href="usuarios.html">👤 <span>Usuários</span></a></li>
+            </ul>
+        </nav>
+    </div>
+    
+    <div class="main-content">
+        <div class="top-bar">
+            <h1 id="editor-header">Criar/Editar Post</h1>
+            <div class="user-info">
+                <span>Bem-vindo(a), <span id="user-display-name">Admin</span>!</span>
+                <button class="btn-logout" onclick="logout()">Sair</button>
+            </div>
+        </div>
+        
+        <div class="editor-container">
+            <form id="post-editor-form" onsubmit="return false;">
+                <input type="hidden" id="post-id" value="">
+                
+                <div class="post-form-grid">
+                    <div class="editor-main">
+                        <h2>Conteúdo da Matéria</h2>
+                        
+                        <div class="form-group">
+                            <label for="post-title">Título da Postagem <span style="color: red;">*</span></label>
+                            <input type="text" id="post-title" required placeholder="Digite o título principal da notícia">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="post-description">Descrição Curta (Resumo/Meta Description)</label>
+                            <input type="text" id="post-description" placeholder="Um resumo de 1 ou 2 frases para a Home e resultados de busca">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="post-content">Conteúdo Completo (Corpo da Matéria)</label>
+                            <textarea id="post-content" placeholder="Insira o texto completo da sua notícia aqui. Use parágrafos (Enter) para formatar."></textarea>
+                        </div>
+                    </div>
+                    
+                    <div class="editor-sidebar">
+                        <h2>Detalhes e Publicação</h2>
+                        
+                        <div class="form-group">
+                            <label for="post-category">Categoria <span style="color: red;">*</span></label>
+                            <select id="post-category" required>
+                                <option value="">Selecione a Categoria</option>
+                                <option value="Política">Política</option>
+                                <option value="Polícia">Polícia</option>
+                                <option value="Esportes">Esportes</option>
+                                <option value="Cidade">Cidade</option>
+                                <option value="Economia">Economia</option>
+                                <option value="Cultura">Cultura</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="post-author">Autor</label>
+                            <select id="post-author">
+                                </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="featured-image-url">URL da Imagem Destacada (600x400 recomendado)</label>
+                            <input type="text" id="featured-image-url" placeholder="Ex: https://via.placeholder.com/600x400">
+                            <div id="image-preview" style="margin-top: 10px;">Prévia da Imagem Destacada</div>
+                        </div>
+
+                        <div class="form-group">
+                            <input type="checkbox" id="is-video" style="width: auto;">
+                            <label for="is-video" style="display: inline; font-weight: normal;">É um Conteúdo em Vídeo?</label>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Opções de Destaque</label>
+                            <div class="destaque-option">
+                                <input type="radio" id="destaque-main" name="destaque" value="main">
+                                <label for="destaque-main">Destaque Principal (Hero)</label>
+                            </div>
+                            <div class="destaque-option">
+                                <input type="radio" id="destaque-sub" name="destaque" value="sub">
+                                <label for="destaque-sub">Sub-Destaque (Lateral do Hero)</label>
+                            </div>
+                            <div class="destaque-option">
+                                <input type="radio" id="destaque-none" name="destaque" value="" checked>
+                                <label for="destaque-none">Nenhum Destaque</label>
+                            </div>
+                        </div>
+
+                        <div class="form-group" style="margin-top: 30px;">
+                            <button type="button" class="btn-action btn-publish">🚀 Publicar Agora</button>
+                            <button type="button" class="btn-action btn-draft">💾 Salvar como Rascunho</button>
+                        </div>
+
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <script>
+        // Variáveis e funções de acesso (Assumimos que estão definidas em access-control.js ou em outro lugar)
+        const postIdInput = document.getElementById('post-id');
+        const editorHeader = document.getElementById('editor-header');
+
+        function generateUniqueId() {
+            // Simula um ID único
+            return Date.now();
+        }
+
+        // Simulação de funções de armazenamento (substitua pelo seu access-control.js, se for diferente)
+        function loadPosts() {
+            return JSON.parse(localStorage.getItem('tvpesqueira_posts') || '[]');
+        }
+        function savePosts(posts) {
+            localStorage.setItem('tvpesqueira_posts', JSON.stringify(posts));
+        }
+        function getPostById(id) {
+            return loadPosts().find(p => p.id === id) || null;
+        }
+
+
+        // Função para preencher a lista de autores
+        function populateAuthorDropdown() {
+            const authorSelect = document.getElementById('post-author');
+            // Mock de autores, o ideal seria carregar isso via access-control.js/API
+            const authors = ['Admin', 'Redação', 'Maria Repórter', 'João Repórter']; 
+            
+            // Limpa o dropdown
+            authorSelect.innerHTML = ''; 
+
+            authors.forEach(author => {
+                const option = document.createElement('option');
+                option.value = author;
+                option.textContent = author;
+                authorSelect.appendChild(option);
+            });
+            
+            // 💡 Tenta pré-selecionar o autor logado (se houver)
+            const loggedInUserRole = localStorage.getItem('userRole'); 
+            if (loggedInUserRole) {
+                const loggedInAuthor = loggedInUserRole === 'admin' ? 'Admin' : 
+                                       loggedInUserRole === 'reporter' ? 'João Repórter' : 'Redação'; // Exemplo simples
+                if (authors.includes(loggedInAuthor)) {
+                    authorSelect.value = loggedInAuthor;
+                }
+            }
+        }
+
+        // Função para carregar um post existente
+        function loadPostForEditing() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const postId = parseInt(urlParams.get('id'));
+
+            if (postId) {
+                const post = getPostById(postId);
+                if (post) {
+                    editorHeader.textContent = 'Editar Postagem';
+                    postIdInput.value = postId;
+                    document.getElementById('post-title').value = post.title;
+                    document.getElementById('post-description').value = post.description;
+                    document.getElementById('post-content').value = post.content || ''; // Conteúdo mais longo
+                    document.getElementById('featured-image-url').value = post.img;
+                    document.getElementById('is-video').checked = post.isVideo;
+                    document.getElementById('post-author').value = post.author;
+                    
+                    // Seleciona a categoria correta
+                    document.getElementById('post-category').value = post.category;
+                    
+                    // Seleciona a opção de destaque
+                    if (post.destaque === 'main') {
+                        document.getElementById('destaque-main').checked = true;
+                    } else if (post.destaque === 'sub') {
+                        document.getElementById('destaque-sub').checked = true;
+                    } else {
+                         document.getElementById('destaque-none').checked = true;
+                    }
+                    
+                    // Garante que a prévia da imagem inicial funcione
+                    const initialUrl = document.getElementById('featured-image-url').value;
+                    if(initialUrl) {
+                        document.getElementById('image-preview').innerHTML = `<img src="${initialUrl}" alt="Prévia da imagem">`;
+                    }
+                    
+                } else {
+                    alert('Postagem não encontrada. Criando uma nova.');
+                    editorHeader.textContent = 'Criar Nova Postagem';
+                    postIdInput.value = ''; // Garante que o ID está vazio para um novo post
+                }
+            } else {
+                editorHeader.textContent = 'Criar Nova Postagem';
+            }
+        }
+
+        // Função de envio do formulário
+        function handleFormSubmit(e, status) {
+            e.preventDefault();
+            
+            const title = document.getElementById('post-title').value;
+            const description = document.getElementById('post-description').value;
+            const content = document.getElementById('post-content').value;
+            const img = document.getElementById('featured-image-url').value;
+            const isVideo = document.getElementById('is-video').checked;
+            const category = document.getElementById('post-category').value;
+            const author = document.getElementById('post-author').value;
+            
+            let postId = postIdInput.value ? parseInt(postIdInput.value) : generateUniqueId();
+            
+            const destaque = document.querySelector('input[name="destaque"]:checked') 
+                             ? document.querySelector('input[name="destaque"]:checked').value 
+                             : null;
+
+
+            if (!title || !category) {
+                alert("Título e Categoria são obrigatórios!");
+                return;
+            }
+
+            // Cria/Atualiza o objeto Post
+            const newPostData = {
+                id: postId,
+                title: title,
+                description: description,
+                content: content,
+                img: img || 'https://via.placeholder.com/600x400?text=Sem+Imagem',
+                isVideo: isVideo,
+                category: category,
+                author: author,
+                time: "Agora", // Pode ser atualizado com uma função de tempo real
+                destaque: destaque, 
+                status: status, // 'published' ou 'draft'
+                // Mantém a data de criação se estiver editando, se não, usa a atual
+                createdAt: getPostById(postId) ? getPostById(postId).createdAt : Date.now()
+            };
+
+            let posts = loadPosts();
+            const existingIndex = posts.findIndex(p => p.id === postId);
+
+            if (existingIndex > -1) {
+                // Atualiza o post existente
+                posts[existingIndex] = newPostData;
+                alert(`Postagem "${title}" atualizada como ${status}!`);
+            } else {
+                // Cria um novo post
+                posts.push(newPostData);
+                alert(`Nova postagem "${title}" criada como ${status}!`);
+            }
+
+            savePosts(posts);
+            // Redireciona para a lista de postagens
+            window.location.href = 'postagens.html';
+        }
+
+        // Associa os eventos de clique aos botões de rascunho e publicação
+        document.querySelector('.btn-publish').addEventListener('click', (e) => handleFormSubmit(e, 'published'));
+        document.querySelector('.btn-draft').addEventListener('click', (e) => handleFormSubmit(e, 'draft'));
+
+        // Previsualização da Imagem
+        document.getElementById('featured-image-url').addEventListener('input', (e) => {
+            const url = e.target.value;
+            const preview = document.getElementById('image-preview');
+            if (url) {
+                preview.innerHTML = `<img src="${url}" alt="Prévia da imagem">`; 
+            } else {
+                preview.innerHTML = `Prévia da Imagem Destacada`;
+            }
+        });
+
+        // Executa a lógica ao carregar
+        document.addEventListener('DOMContentLoaded', () => {
+            // 🟢 CORREÇÃO: Descomentando e verificando a função de login
+            if (typeof checkLoginAndRole === 'function') {
+                if (checkLoginAndRole()) { 
+                    populateAuthorDropdown();
+                    loadPostForEditing(); 
+                }
+            } else {
+                // Fallback: se a função de segurança não estiver carregada, tenta carregar o editor.
+                populateAuthorDropdown();
+                loadPostForEditing(); 
+            }
+            
+            // 💡 Para garantir que a prévia da imagem inicial funcione:
+            const initialUrl = document.getElementById('featured-image-url').value;
+            if(initialUrl) {
+                 document.getElementById('image-preview').innerHTML = `<img src="${initialUrl}" alt="Prévia da imagem">`;
+            }
+        });
+    </script>
+</body>
+</html>

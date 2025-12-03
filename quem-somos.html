@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quem Somos - TvPesqueira</title>
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&family=Montserrat:wght@800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    
+    <style>
+        /* --- ESTILOS GERAIS (MANTIDOS CONSISTENTES) --- */
+        :root {
+            --cor-primaria: #FFD700;
+            --cor-secundaria: #051e3e;
+            --cor-terciaria: #ffffff;
+            --cinza-fundo: #f4f5f7;
+            --texto-escuro: #1a1a1a;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Open Sans', sans-serif; background-color: var(--cinza-fundo); color: var(--texto-escuro); line-height: 1.6; }
+        a { text-decoration: none; color: inherit; transition: 0.3s; }
+        ul { list-style: none; }
+        img { width: 100%; height: auto; display: block; }
+        
+        /* HEADER */
+        header { background-color: var(--cor-secundaria); color: var(--cor-terciaria); position: sticky; top: 0; z-index: 1000; border-bottom: 4px solid var(--cor-primaria); }
+        .header-main { max-width: 1200px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; padding: 15px 20px; }
+        .logo { font-family: 'Montserrat', sans-serif; font-size: 2rem; font-weight: 800; text-transform: uppercase; letter-spacing: -1px; display: flex; align-items: center; gap: 5px; }
+        .logo span.tv { background: var(--cor-primaria); color: var(--cor-secundaria); padding: 0 10px; border-radius: 4px; }
+        .nav-menu { display: flex; gap: 20px; }
+        .nav-menu a { font-weight: 600; font-size: 0.9rem; text-transform: uppercase; padding: 5px 0; border-bottom: 2px solid transparent; }
+        .nav-menu a:hover { color: var(--cor-primaria); border-bottom: 2px solid var(--cor-primaria); }
+        .btn-live { background: #cc0000; color: white; padding: 5px 15px; border-radius: 50px; font-weight: bold; font-size: 0.8rem; display: flex; align-items: center; gap: 5px; }
+        
+        /* LAYOUT PRINCIPAL */
+        .container { 
+            max-width: 1000px; 
+            margin: 20px auto; 
+            padding: 40px; 
+            background-color: var(--cor-terciaria);
+            box-shadow: 0 0 15px rgba(0,0,0,0.05);
+            border-radius: 8px;
+        }
+
+        /* TÍTULO DA PÁGINA (Padrão) */
+        .page-title { 
+            font-family: 'Montserrat', sans-serif; 
+            font-size: 2.5rem; 
+            color: var(--cor-secundaria); 
+            margin-bottom: 30px; 
+            border-bottom: 4px solid var(--cor-primaria); 
+            padding-bottom: 10px; 
+        }
+
+        /* Subtítulos de Seção */
+        .section-title {
+            font-family: 'Montserrat', sans-serif;
+            color: var(--cor-secundaria);
+            font-size: 1.8rem;
+            margin-top: 30px;
+            margin-bottom: 15px;
+            padding-bottom: 5px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        /* Conteúdo do Quem Somos */
+        .mission-vision-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+        .item-card {
+            background: var(--cinza-fundo);
+            padding: 25px;
+            border-radius: 8px;
+            border-left: 5px solid var(--cor-primaria);
+        }
+        .item-card h3 {
+            font-family: 'Montserrat', sans-serif;
+            color: var(--cor-secundaria);
+            margin-bottom: 10px;
+            font-size: 1.3rem;
+        }
+        .item-card p {
+            font-size: 1rem;
+        }
+        
+        /* Contato Rápido */
+        .contact-info {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-top: 20px;
+        }
+        .contact-info a {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: var(--cor-secundaria);
+            font-weight: 600;
+        }
+        .contact-info a:hover {
+            color: var(--cor-primaria);
+        }
+
+        /* Footer e Responsividade (Copiados) */
+        footer { background: var(--cor-secundaria); color: #ccc; padding: 40px 20px 20px 20px; margin-top: 40px; }
+        .footer-content { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: repeat(4, 1fr); gap: 30px; }
+        .footer-col h4 { color: var(--cor-terciaria); margin-bottom: 15px; font-size: 1rem; text-transform: uppercase; }
+        .footer-col a { display: block; font-size: 0.9rem; margin-bottom: 8px; opacity: 0.8; }
+        .footer-col a:hover { color: var(--cor-primaria); opacity: 1; }
+
+        @media (max-width: 900px) {
+             .container { width: 95%; padding: 20px; }
+             .mission-vision-grid { grid-template-columns: 1fr; }
+             .footer-content { grid-template-columns: 1fr 1fr; }
+             .page-title { font-size: 2rem; }
+        }
+        @media (max-width: 600px) {
+             .footer-content { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="header-main">
+            <a href="index.html" class="logo">
+                <span class="tv">TV</span>
+                <span class="nome">PESQUEIRA</span>
+            </a>
+
+            <nav class="nav-menu" id="navMenu">
+                <a href="index.html">Início</a>
+                <a href="categoria.html?cat=Cidade">Cidade</a>
+                <a href="categoria.html?cat=Polícia">Polícia</a>
+                <a href="categoria.html?cat=Política">Política</a>
+                <a href="categoria.html?cat=Esportes">Esportes</a>
+                <a href="categoria.html?cat=Vídeos">Vídeos</a>
+            </nav>
+
+            <a href="https://www.youtube.com/@tvpesqueira" class="btn-live" target="_blank">
+                <div style="width: 8px; height: 8px; background: white; border-radius: 50%;"></div>
+                Youtube
+            </a>
+        </div>
+    </header>
+
+    <main class="container">
+        
+        <h1 class="page-title">Quem Somos</h1>
+
+        <p style="font-size: 1.1rem; margin-bottom: 25px;">
+            A <strong>TvPesqueira</strong> nasceu da necessidade de um jornalismo ágil, independente e totalmente focado nos acontecimentos de Pesqueira e região. Nossa missão é ir além das manchetes, levando a verdade dos fatos e promovendo o debate construtivo para a nossa comunidade.
+        </p>
+
+        <h2 class="section-title">Missão e Valores</h2>
+        
+        <div class="mission-vision-grid">
+            <div class="item-card">
+                <h3>Missão</h3>
+                <p>Ser a principal fonte de informação local, oferecendo notícias com precisão e isenção, capacitando os cidadãos a tomar decisões informadas.</p>
+            </div>
+            <div class="item-card">
+                <h3>Visão</h3>
+                <p>Ser reconhecido como o veículo de comunicação mais confiável e influente da região, promovendo a transparência e o desenvolvimento social.</p>
+            </div>
+        </div>
+
+        <h2 class="section-title">Nosso Compromisso</h2>
+
+        <ul style="margin-left: 20px; margin-bottom: 30px; list-style-type: '👉 ';">
+            <li style="margin-bottom: 10px;"><strong>Independência Editorial:</strong> Não temos vínculos políticos ou econômicos que comprometam a verdade. Nossas notícias são guiadas apenas pelo interesse público.</li>
+            <li style="margin-bottom: 10px;"><strong>Agilidade e Cobertura:</strong> Levamos a notícia no momento em que ela acontece, cobrindo o dia a dia da cidade, polícia, política e esportes.</li>
+            <li><strong>Comunidade em Foco:</strong> Damos voz aos cidadãos e atuamos como um canal de serviço e utilidade pública para Pesqueira.</li>
+        </ul>
+
+        <h2 class="section-title">Fale Conosco</h2>
+        <p>Se você tem uma denúncia, sugestão de pauta ou quer saber mais sobre nossa equipe, entre em contato:</p>
+
+        <div class="contact-info">
+            <a href="mailto:contato@tvpesqueira.com.br">
+                <i class="fas fa-envelope fa-lg"></i>
+                <span>contato@tvpesqueira.com.br</span>
+            </a>
+            <a href="anuncie.html">
+                <i class="fas fa-bullhorn fa-lg"></i>
+                <span>Para anunciar: Veja nossa página de publicidade</span>
+            </a>
+        </div>
+
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-col">
+                <div class="logo" style="font-size: 1.5rem; margin-bottom: 15px;">
+                    <span class="tv">TV</span> <span class="nome">PESQUEIRA</span>
+                </div>
+                <p style="font-size: 0.9rem; opacity: 0.7;">Levando a verdade dos fatos até você. Jornalismo independente e comprometido com a região.</p>
+            </div>
+            <div class="footer-col">
+                <h4>Editorias</h4>
+                <a href="categoria.html?cat=Cidade">Cidade</a>
+                <a href="categoria.html?cat=Polícia">Polícia</a>
+                <a href="categoria.html?cat=Política">Política</a>
+                <a href="#">Economia</a>
+                <a href="#">Cultura</a>
+            </div>
+            <div class="footer-col">
+                <h4>Institucional</h4>
+                <a href="quem-somos.html">Quem Somos</a>
+                <a href="anuncie.html">Anuncie</a>
+            </div>
+            <div class="footer-col">
+                <h4>Redes Sociais</h4>
+                <a href="https://www.instagram.com/tvpesqueira" target="_blank">Instagram</a>
+                <a href="https://www.facebook.com/tvpesqueira" target="_blank">Facebook</a>
+                <a href="https://www.youtube.com/@tvpesqueira" target="_blank">YouTube</a>
+                <a href="https://twitter.com/tvpesqueira" target="_blank">Twitter/X</a>
+            </div>
+        </div>
+        <div style="text-align: center; margin-top: 30px; font-size: 0.8rem; opacity: 0.5;">
+            &copy; 2023 TvPesqueira. Todos os direitos reservados.
+        </div>
+    </footer>
+
+</body>
+</html>

@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gerenciar Páginas Estáticas | TvPesqueira Admin</title>
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&family=Montserrat:wght@800&display=swap" rel="stylesheet">
+    <script src="access-control.js" defer></script>
+    
+    <style>
+        :root {
+            --cor-primaria: #FFD700; --cor-secundaria: #051e3e; --cor-terciaria: #ffffff;
+            --cinza-fundo: #f0f2f5; --texto-escuro: #333; --texto-claro: #ccc;
+            --destaque-hover: #e6c200;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Open Sans', sans-serif; background-color: var(--cinza-fundo); color: var(--texto-escuro); display: flex; min-height: 100vh; }
+        a { text-decoration: none; color: inherit; transition: 0.2s; }
+        .sidebar { width: 250px; background-color: var(--cor-secundaria); color: var(--cor-terciaria); flex-shrink: 0; padding: 20px 0; box-shadow: 2px 0 5px rgba(0,0,0,0.1); }
+        .sidebar-logo { padding: 0 20px 20px 20px; border-bottom: 1px solid rgba(255, 255, 255, 0.1); margin-bottom: 20px; }
+        .sidebar-logo a { font-family: 'Montserrat', sans-serif; font-size: 1.5rem; font-weight: 800; display: block; }
+        .sidebar-logo span.tv { color: var(--cor-primaria); }
+        .sidebar nav ul li a { display: flex; align-items: center; padding: 12px 20px; font-size: 0.95rem; color: var(--texto-claro); gap: 10px; }
+        .sidebar nav ul li.active a { background-color: rgba(255, 255, 255, 0.1); color: var(--cor-primaria); border-left: 3px solid var(--cor-primaria); }
+        .main-content { flex-grow: 1; display: flex; flex-direction: column; }
+        .top-bar { background: var(--cor-terciaria); padding: 15px 30px; box-shadow: 0 1px 4px rgba(0,0,0,0.05); display: flex; justify-content: space-between; align-items: center; }
+        .top-bar h1 { font-size: 1.5rem; color: var(--cor-secundaria); }
+        .user-info { display: flex; align-items: center; gap: 15px; }
+        .user-info span { font-weight: 600; color: var(--texto-escuro); }
+        .btn-logout { background: #e74c3c; color: white; padding: 8px 15px; border: none; border-radius: 4px; cursor: pointer; font-weight: 600; }
+        .btn-logout:hover { background: #c0392b; }
+        .page-container { padding: 30px; background-color: var(--cinza-fundo); flex-grow: 1; }
+        .card { background: var(--cor-terciaria); padding: 30px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); margin-bottom: 30px; }
+        .card h2 { color: var(--cor-secundaria); margin-bottom: 20px; font-size: 1.3rem; border-bottom: 1px solid #eee; padding-bottom: 10px; }
+        /* Tabela */
+        .page-list { width: 100%; border-collapse: collapse; }
+        .page-list th, .page-list td { padding: 12px 15px; text-align: left; border-bottom: 1px solid #eee; }
+        .page-list th { background-color: #f8f8f8; color: var(--cor-secundaria); font-weight: 700; }
+        .btn-edit { background: var(--cor-primaria); color: var(--cor-secundaria); padding: 6px 12px; border: none; border-radius: 4px; cursor: pointer; font-weight: 700; }
+        .btn-edit:hover { background: var(--destaque-hover); }
+
+    </style>
+</head>
+<body>
+    <div class="sidebar">
+        <div class="sidebar-logo">
+            <a href="admin.html"><span class="tv">TV</span>PESQUEIRA</a>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="admin.html">🏠 <span>Dashboard</span></a></li>
+                <li id="link-postagens"><a href="postagens.html">📝 <span>Postagens</span></a></li>
+                <li id="link-paginas" class="active"><a href="paginas-estaticas.html">📄 <span>Páginas Estáticas</span></a></li>
+                <li id="link-usuarios"><a href="usuarios.html">👤 <span>Usuários</span></a></li>
+            </ul>
+        </nav>
+    </div>
+    
+    <div class="main-content">
+        <div class="top-bar">
+            <h1>Gerenciar Páginas Estáticas</h1>
+            <div class="user-info">
+                <span>Bem-vindo(a), <span id="user-display-name">Admin</span>!</span>
+                <button class="btn-logout" onclick="logout()">Sair</button>
+            </div>
+        </div>
+        
+        <div class="page-container">
+            <div class="card">
+                <h2>Páginas Existentes</h2>
+                <table class="page-list">
+                    <thead>
+                        <tr>
+                            <th style="width: 50%;">Título da Página</th>
+                            <th style="width: 30%;">Slug (URL)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Quem Somos (Institucional)</td>
+                            <td>quem-somos</td>
+                        </tr>
+                        <tr>
+                            <td>Anuncie Conosco</td>
+                            <td>anuncie</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Verifica se o usuário está logado e tem a função adequada
+            if (typeof checkLoginAndRole === 'function') {
+                checkLoginAndRole();
+            }
+        });
+    </script>
+    
+</body>
+</html>

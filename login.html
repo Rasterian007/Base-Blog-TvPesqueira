@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login | TvPesqueira Admin</title>
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&family=Montserrat:wght@800&display=swap" rel="stylesheet">
+    <script src="access-control.js" defer></script> 
+    <style>
+        /* ESTILOS DE LOGIN */
+        :root { --cor-primaria: #FFD700; --cor-secundaria: #051e3e; --cor-terciaria: #ffffff; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Open Sans', sans-serif; background-color: var(--cor-secundaria); color: #fff; display: flex; justify-content: center; align-items: center; min-height: 100vh; }
+        
+        .login-container { 
+            background: var(--cor-terciaria); 
+            padding: 40px; 
+            border-radius: 8px; 
+            box-shadow: 0 4px 20px rgba(0,0,0,0.2); 
+            width: 100%; 
+            max-width: 400px;
+        }
+        
+        .logo { 
+            font-family: 'Montserrat', sans-serif;
+            font-size: 2rem;
+            font-weight: 800;
+            text-align: center;
+            margin-bottom: 25px;
+            color: var(--cor-secundaria);
+        }
+        .logo span.tv {
+            background: var(--cor-secundaria);
+            color: var(--cor-primaria);
+            padding: 0 10px;
+            border-radius: 4px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 600;
+            color: var(--cor-secundaria);
+        }
+
+        input[type="email"],
+        input[type="password"] {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 1rem;
+            color: var(--cor-secundaria);
+        }
+
+        button[type="submit"] {
+            width: 100%;
+            padding: 12px;
+            background: var(--cor-primaria);
+            color: var(--cor-secundaria);
+            border: none;
+            border-radius: 4px;
+            font-weight: 700;
+            font-size: 1.1rem;
+            cursor: pointer;
+            margin-top: 20px;
+            transition: background 0.2s;
+        }
+
+        button[type="submit"]:hover {
+            background: #e6c200;
+        }
+        
+        .simulacao-info {
+            background: #f7f7f7;
+            border: 1px solid #eee;
+            padding: 15px;
+            border-radius: 4px;
+            margin-top: 20px;
+            font-size: 0.9rem;
+            color: #555;
+        }
+        .simulacao-info p, .simulacao-info ul { margin-bottom: 10px; }
+        .simulacao-info ul { padding-left: 20px; }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <div class="logo">
+            <span class="tv">ADMIN</span>
+            <span class="nome" style="color: var(--cor-secundaria);">LOGIN</span>
+        </div>
+        <p style="color: #666; margin-bottom: 25px; text-align: center;">Acesso exclusivo para administradores e repórteres.</p>
+        
+        <form id="login-form">
+            <div class="form-group">
+                <label for="username">Email:</label>
+                <input type="email" id="username" placeholder="Credencial Do Reporter" required>
+            </div>
+            <div class="form-group">
+                <label for="password">Senha:</label>
+                <input type="password" id="password" placeholder="Senha Da Credencial" required>
+            </div>
+            <button type="submit">Entrar no Painel</button>
+        </form>
+           <!-- // Usúario e senha Loguin  -->
+            <!-- admin@tvp.com senha Admin
+            reporter1@tvp.com senha Repórter -->
+    <script>
+        document.getElementById('login-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value; // Senha não é usada, mas mantida para UX
+            
+            // Assume que window.attemptLogin está definido em access-control.js
+            if (window.attemptLogin(username, password)) {
+                alert("Login bem-sucedido!");
+                window.location.href = 'admin.html'; // Redireciona para o painel
+            } else {
+                alert("Usuário não encontrado ou senha incorreta.");
+            }
+        });
+    </script>
+</body>
+</html>
