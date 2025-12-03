@@ -277,89 +277,147 @@
     </footer>
     
     <script>
-        // Funções de formatação e loadPosts (copiadas do index.html para consistência)
-        const DEFAULT_POSTS = [
-            { id: 1, title: "Prefeito de Pesqueira Anuncia Novos Projetos de Infraestrutura", description: "Novas obras de pavimentação e saneamento básico começam na próxima semana, prometendo melhorias significativas na vida dos moradores.", content: "O Prefeito XXXXX, em coletiva de imprensa realizada nesta manhã, detalhou o cronograma para os novos projetos de infraestrutura da cidade. A prioridade será a região do bairro YYYY.\n\nAs obras têm previsão de 120 dias para conclusão e foram aprovadas com recursos do governo federal.", author: "Redação TvPesqueira", date: "2025-12-01T10:00:00", category: "Política", img: "https://via.placeholder.com/1200x600.png?text=Noticia+Padrao+1", status: "published" },
-            { id: 2, title: "Festival de Cultura Local Bate Recorde de Público", description: "Edição 2025 do festival atrai milhares de visitantes e destaca artistas regionais em diversas categorias.", content: "A Praça ZZZZ ficou lotada durante os três dias do evento, que celebrou a música, dança e culinária de Pesqueira.", author: "Maria Silva", date: "2025-11-29T18:30:00", category: "Cultura", img: "https://via.placeholder.com/300x180.png?text=Noticia+Padrao+2", status: "published" },
-            { id: 3, title: "Economia: Comércio Pesqueirense Projeta Alta nas Vendas de Final de Ano", description: "Expectativa é de crescimento de 15% em relação ao ano passado, impulsionado por novas lojas e crédito facilitado.", content: "A Câmara de Dirigentes Lojistas (CDL) de Pesqueira divulgou o levantamento otimista, que aponta o setor de vestuário e eletrônicos como os principais motores do crescimento.", author: "João Batista", date: "2025-11-28T09:15:00", category: "Economia", img: "https://via.placeholder.com/300x180.png?text=Noticia+Padrao+3", status: "published" },
-            { id: 4, title: "Nova Delegacia Inaugurada no Centro", description: "Melhoria na segurança pública local.", content: "A nova unidade policial deve atender uma área com mais de 30 mil habitantes.", author: "Redação", date: "2025-11-27T14:00:00", category: "Polícia", img: "https://via.placeholder.com/300x180.png?text=Noticia+Padrao+4", status: "published" },
-        ];
-        const POSTS_STORAGE_KEY = 'tvpesqueira_posts';
-        function loadPosts() {
-            const postsJson = localStorage.getItem(POSTS_STORAGE_KEY);
-            let posts;
-            try {
+    // --- FUNÇÕES DE DADOS (CORRIGIDAS) ---
+    
+    const POSTS_STORAGE_KEY = 'tvpesqueira_posts';
+
+    function loadPosts() {
+        const postsJson = localStorage.getItem(POSTS_STORAGE_KEY);
+        let posts = [];
+        try {
+            if (postsJson) {
                 posts = JSON.parse(postsJson);
-            } catch (e) {
-                console.error("Erro ao carregar posts do localStorage:", e);
             }
-            return (Array.isArray(posts) && posts.length > 0) ? posts : DEFAULT_POSTS;
+        } catch (e) {
+            console.error("Erro ao carregar posts do localStorage:", e);
+            // Em caso de erro, retorna array vazio
+            return [];
         }
-        function formatDate(dateString) {
-            if (!dateString) return 'Data Desconhecida';
-            try {
-                const date = new Date(dateString);
-                if (isNaN(date)) return 'Data Inválida';
-                
-                const options = { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' };
-                return date.toLocaleDateString('pt-BR', options);
-            } catch (e) {
-                return 'Erro na Data';
-            }
-        }
-        // FIM das Funções de formatação e loadPosts
-
-        document.addEventListener('DOMContentLoaded', () => {
-            const urlParams = new URLSearchParams(window.location.search);
-            const postId = urlParams.get('id');
-
-            const postTitleElement = document.getElementById('post-title');
-            const postCategoryElement = document.getElementById('post-category');
-            const postMetaElement = document.getElementById('post-meta');
-            const postImageElement = document.getElementById('post-image');
-            const postBodyElement = document.getElementById('post-body');
-
-            if (postId) {
-                const allPosts = loadPosts();
-                const post = allPosts.find(p => p.id == postId && p.status === 'published');
-                
-                if (post) {
-                    // Preenche os dados da notícia
-                    document.getElementById('page-title').textContent = `${post.title} - TvPesqueira`;
-                    postTitleElement.textContent = post.title;
-                    postCategoryElement.textContent = post.category || 'Geral';
-                    postMetaElement.textContent = `Por ${post.author || 'Redação'} - ${formatDate(post.date)}`;
-                    
-                    // A imagem principal usa fallback aqui. O onerror no HTML garante que algo será exibido.
-                    postImageElement.src = post.img || 'https://via.placeholder.com/1200x600.png?text=Imagem+da+Noticia';
-                    postImageElement.alt = post.title;
-
-                    // Converte texto do post em parágrafos HTML
-                    const paragraphs = (post.content || post.description || "").split('\n').filter(p => p.trim() !== '').map(p => `<p>${p}</p>`).join('');
-                    postBodyElement.innerHTML = paragraphs || `<p>Conteúdo completo da matéria não disponível.</p>`;
-                    
-                } else {
-                    // Se o ID existir mas o post não for encontrado ou não estiver publicado
-                    postTitleElement.textContent = "Notícia Não Encontrada ou Não Publicada (404)";
-                    postBodyElement.innerHTML = `<div class="error-message">
-                        <h2>Conteúdo Não Encontrado</h2>
-                        <p>A notícia que você está procurando não existe, não foi publicada ou foi removida do sistema.</p>
-                    </div>`;
-                }
-            } else {
-                 // Se não houver ID na URL
-                 postTitleElement.textContent = "Notícia Não Especificada (Erro de URL)";
-                 postBodyElement.innerHTML = `<div class="error-message">
-                        <h2>Notícia Inválida</h2>
-                        <p>O link da notícia está incompleto. Tente voltar para a página principal.</p>
-                    </div>`;
-            }
-        });
         
-        function toggleMenu() {
-            var menu = document.getElementById("navMenu");
-            menu.classList.toggle("active");
+        // CORREÇÃO ESSENCIAL: Removemi o DEFAULT_POSTS. 
+        // Se o localStorage estiver vazio ou inválido, retorna um array vazio [].
+        if (!Array.isArray(posts) || posts.length === 0) {
+             return []; 
         }
-    </script>
+        return posts;
+    }
+
+    // Função savePosts removida: Sua remoção evita que a página inicial salve os DEFAULT_POSTS no localStorage.
+
+    function formatDate(dateString) {
+        if (!dateString) return 'Data Desconhecida';
+        try {
+            const date = new Date(dateString);
+            if (isNaN(date)) return 'Data Inválida';
+            
+            const options = { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' };
+            return date.toLocaleDateString('pt-BR', options);
+        } catch (e) {
+            return 'Erro na Data';
+        }
+    }
+    // --- FIM DAS FUNÇÕES DE DADOS ---
+
+    // --- FUNÇÃO DE RENDERIZAÇÃO DA PÁGINA INICIAL ---
+    function renderHomePage() {
+        // Agora, loadPosts() só retorna o que você salvou.
+        const allPosts = loadPosts().filter(p => p.status === 'published'); 
+        
+        const sortedPosts = allPosts.sort((a, b) => new Date(b.date) - new Date(a.date));
+
+        // 1. Destaques (Hero e Sub-Destaques)
+        let mainDestaque = sortedPosts.find(p => p.destaque === 'main');
+        let subDestaques = sortedPosts.filter(p => p.destaque === 'sub').slice(0, 2); 
+        
+        if (!mainDestaque && sortedPosts.length > 0) {
+             mainDestaque = sortedPosts[0];
+        }
+
+        const featuredSection = document.getElementById('featured-section');
+        featuredSection.innerHTML = ''; 
+
+        if (mainDestaque) {
+            const heroHtml = `
+                <div class="hero-post-container">
+                    <a href="post.html?id=${mainDestaque.id}" class="hero-post">
+                        <div class="hero-img-container">
+                            <img src="${mainDestaque.img || 'https://via.placeholder.com/1200x600.png?text=Sem+Imagem+Principal'}" alt="${mainDestaque.title}" onerror="this.onerror=null; this.src='https://via.placeholder.com/1200x600.png?text=Sem+Imagem+Principal'">
+                        </div>
+                        <div class="hero-content">
+                            <div class="hero-category">${mainDestaque.category}</div>
+                            <h2 class="hero-title">${mainDestaque.title}</h2>
+                            <p class="hero-excerpt">${mainDestaque.description}</p>
+                            <p class="hero-meta">Por ${mainDestaque.author} - ${formatDate(mainDestaque.date)}</p>
+                        </div>
+                    </a>
+                </div>
+            `;
+            
+            let subDestaquesHtml = subDestaques.map(post => `
+                <a href="post.html?id=${post.id}" class="sub-featured-card">
+                    <div class="sub-featured-img">
+                         <img src="${post.img || 'https://via.placeholder.com/300x180.png?text=Sem+Imagem+Sub'}" alt="${post.title}" onerror="this.onerror=null; this.src='https://via.placeholder.com/300x180.png?text=Sem+Imagem+Sub'">
+                    </div>
+                    <div class="sub-featured-content">
+                        <div class="sub-featured-category">${post.category}</div>
+                        <h3 class="sub-featured-title">${post.title}</h3>
+                        <p class="sub-featured-meta">${formatDate(post.date)}</p>
+                    </div>
+                </a>
+            `).join('');
+
+            const subFeaturedSectionHtml = `
+                <div class="sub-featured-list-container">
+                    <div class="sub-featured-list">
+                        ${subDestaquesHtml}
+                    </div>
+                </div>
+            `;
+
+            featuredSection.innerHTML = `<div class="featured-content-grid">${heroHtml + subFeaturedSectionHtml}</div>`;
+
+        } else {
+             featuredSection.innerHTML = `<p style="grid-column: 1 / -1; text-align: center; padding: 50px;">😔 Não há posts publicados para exibir como Destaque no momento.</p>`;
+        }
+
+
+        // 2. Notícias Recentes
+        const featuredIds = [mainDestaque ? mainDestaque.id : null, ...subDestaques.map(p => p.id)];
+        const newsForGrid = sortedPosts
+            .filter(p => !featuredIds.includes(p.id)) 
+            .slice(0, 6); 
+
+        const gridElement = document.getElementById('recent-news-grid');
+        gridElement.innerHTML = ''; 
+        
+        if (newsForGrid.length > 0) {
+            const postsHtml = newsForGrid.map(post => `
+                <a href="post.html?id=${post.id}" class="post-card">
+                    <div class="post-card-img">
+                        <img src="${post.img || 'https://via.placeholder.com/300x180.png?text=Sem+Imagem'}" alt="${post.title}" onerror="this.onerror=null; this.src='https://via.placeholder.com/300x180.png?text=Sem+Imagem'">
+                    </div>
+                    <div class="post-card-content">
+                        <div class="post-card-category">${post.category}</div>
+                        <h2 class="post-card-title">${post.title}</h2>
+                        <p class="post-card-excerpt">${post.description}</p>
+                        <p class="post-card-meta">Por ${post.author} - ${formatDate(post.date)}</p>
+                    </div>
+                </a>
+            `).join(''); 
+            
+            gridElement.innerHTML = postsHtml;
+
+        } else {
+            gridElement.innerHTML = `<p style="grid-column: 1 / -1; padding: 20px; text-align: center; color: #555;">Não há outras notícias publicadas no momento.</p>`;
+        }
+    }
+    
+    function toggleMenu() {
+        var menu = document.getElementById("navMenu");
+        menu.classList.toggle("active");
+    }
+
+    document.addEventListener('DOMContentLoaded', renderHomePage);
+</script>
 </body>
 </html>
