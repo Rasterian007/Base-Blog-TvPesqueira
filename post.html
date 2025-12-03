@@ -284,18 +284,29 @@
             { id: 3, title: "Economia: Comércio Pesqueirense Projeta Alta nas Vendas de Final de Ano", description: "Expectativa é de crescimento de 15% em relação ao ano passado, impulsionado por novas lojas e crédito facilitado.", content: "A Câmara de Dirigentes Lojistas (CDL) de Pesqueira divulgou o levantamento otimista, que aponta o setor de vestuário e eletrônicos como os principais motores do crescimento.", author: "João Batista", date: "2025-11-28T09:15:00", category: "Economia", img: "https://via.placeholder.com/300x180.png?text=Noticia+Padrao+3", status: "published" },
             { id: 4, title: "Nova Delegacia Inaugurada no Centro", description: "Melhoria na segurança pública local.", content: "A nova unidade policial deve atender uma área com mais de 30 mil habitantes.", author: "Redação", date: "2025-11-27T14:00:00", category: "Polícia", img: "https://via.placeholder.com/300x180.png?text=Noticia+Padrao+4", status: "published" },
         ];
+        // 2. Definimos a chave do LocalStorage
         const POSTS_STORAGE_KEY = 'tvpesqueira_posts';
+        
+        // 3. A função loadPosts() NÃO RETORNA MAIS AS POSTAGENS PADRÃO
         function loadPosts() {
             const postsJson = localStorage.getItem(POSTS_STORAGE_KEY);
             let posts;
             try {
+                // Tenta fazer o parse do JSON do localStorage
                 posts = JSON.parse(postsJson);
             } catch (e) {
                 console.error("Erro ao carregar posts do localStorage:", e);
+                // Em caso de erro de parse, trata como array vazia
+                posts = []; 
             }
-            return (Array.isArray(posts) && posts.length > 0) ? posts : DEFAULT_POSTS;
+            
+            // Retorna posts do localStorage se existirem e forem válidos, senão retorna array vazia
+            // O blog AGORA COMEÇA VAZIO se não houver nada salvo.
+            return (Array.isArray(posts) && posts.length > 0) ? posts : [];
         }
+        
         function formatDate(dateString) {
+            // (Mantenha o resto da função formatDate original)
             if (!dateString) return 'Data Desconhecida';
             try {
                 const date = new Date(dateString);
