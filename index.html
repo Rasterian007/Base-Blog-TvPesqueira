@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Início - TvPesqueira</title>
+    <title id="page-title">Início - TvPesqueira</title>
     <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&family=Montserrat:wght@800&display=swap" rel="stylesheet">
     
     <style>
@@ -41,94 +41,118 @@
         .btn-live { background: #cc0000; color: white; padding: 5px 15px; border-radius: 50px; font-weight: bold; font-size: 0.8rem; display: flex; align-items: center; gap: 5px; }
         .menu-toggle { display: none; cursor: pointer; color: var(--cor-terciaria); font-size: 1.5rem; }
 
-        /* LAYOUT PRINCIPAL */
-        .container { max-width: 1200px; margin: 20px auto; padding: 0 20px; }
-
-        .section-title {
-            font-family: 'Montserrat', sans-serif;
-            font-size: 1.8rem;
-            color: var(--cor-secundaria);
-            margin-top: 30px;
-            margin-bottom: 20px;
-            border-bottom: 4px solid var(--cor-primaria);
-            padding-bottom: 10px;
+        /* LAYOUT DA HOME */
+        .container { max-width: 1200px; margin: 20px auto; padding: 0 20px; 
+            display: grid; 
+            grid-template-columns: 3fr 1fr; 
+            gap: 30px; 
+        }
+        .main-content h2 { 
+            font-family: 'Montserrat', sans-serif; 
+            font-size: 1.5rem; 
+            color: var(--cor-secundaria); 
+            margin-bottom: 20px; 
+            border-bottom: 3px solid var(--cor-primaria); 
+            padding-bottom: 5px; 
         }
 
-        /* --- DESTAQUE DA NOTÍCIA (FEATURED POST) --- */
-        .featured-post-container {
-            display: flex;
+        /* SIDEBAR (WIDGETS) */
+        .sidebar { 
+            position: sticky; 
+            top: 90px; 
+            align-self: flex-start;
+        }
+        .widget {
             background: var(--cor-terciaria);
+            padding: 20px;
             border-radius: 8px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
             margin-bottom: 30px;
-            overflow: hidden;
         }
-        .featured-post-img {
-            flex: 1.5; /* Ocupa mais espaço */
-            height: 400px;
-            overflow: hidden;
+        .widget h4 { 
+            font-family: 'Montserrat', sans-serif; 
+            font-size: 1.1rem; 
+            font-weight: 800; 
+            color: var(--cor-secundaria); 
+            margin-bottom: 15px; 
+            border-bottom: 2px solid var(--cor-primaria); 
+            padding-bottom: 5px; 
         }
-        .featured-post-img img {
+
+        /* Widget de Anúncio */
+        .ad-widget {
+            background: #e0e0e0;
+            text-align: center;
+            padding: 10px; 
+            border-radius: 8px;
+            margin-bottom: 20px;
+            border: 1px solid #ddd;
+        }
+        .ad-widget img { 
+            margin: 10px auto 0;
+            max-width: 100%;
+            height: auto;
+            border-radius: 4px;
+        }
+        .ad-widget p { margin: 0; font-size: 0.8rem; color: #888; }
+        .ad-widget h4 { color: var(--cor-secundaria); font-size: 1.2rem; margin-top: 5px; margin-bottom: 0; font-family: 'Montserrat', sans-serif; font-weight: 800; }
+
+        /* DESTAQUE PRINCIPAL */
+        .featured-post {
+            display: block;
+            margin-bottom: 30px;
+            background: var(--cor-terciaria); 
+            border-radius: 8px; 
+            overflow: hidden; 
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1); 
+            transition: transform 0.2s;
+        }
+        .featured-post:hover { transform: translateY(-5px); box-shadow: 0 8px 20px rgba(0,0,0,0.15); }
+        .featured-img-container { 
+            height: 400px; 
+            overflow: hidden; 
+            position: relative;
+        }
+        .featured-img-container img {
             width: 100%;
             height: 100%;
             object-fit: cover;
-            transition: transform 0.3s;
         }
-        .featured-post-container:hover .featured-post-img img {
-            transform: scale(1.03);
+        .featured-content {
+            padding: 20px;
         }
-        .featured-post-content {
-            flex: 1; /* Ocupa menos espaço */
-            padding: 30px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
+        .featured-category { 
+            font-size: 0.8rem; 
+            font-weight: 700; 
+            color: var(--cor-primaria); 
+            text-transform: uppercase; 
+            margin-bottom: 5px; 
         }
-        .featured-post-category {
-            font-size: 0.9rem;
-            font-weight: 700;
-            color: var(--cor-secundaria);
-            text-transform: uppercase;
-            margin-bottom: 10px;
-            border-left: 4px solid var(--cor-primaria);
-            padding-left: 10px;
-        }
-        .featured-post-title {
-            font-family: 'Montserrat', sans-serif;
-            font-size: 2rem;
+        .featured-title { 
+            font-family: 'Montserrat', sans-serif; 
+            font-size: 2rem; 
             line-height: 1.2;
-            margin-bottom: 15px;
-            color: var(--texto-escuro);
+            margin-bottom: 10px; 
+            color: var(--cor-secundaria); 
         }
-        .featured-post-excerpt {
-            font-size: 1rem;
-            color: #555;
-            margin-bottom: 20px;
-            display: -webkit-box;
-            -webkit-line-clamp: 3; /* Limita a 3 linhas */
-            -webkit-box-orient: vertical;
-            overflow: hidden;
+        .featured-excerpt { 
+            font-size: 1rem; 
+            color: #555; 
+            max-height: 60px; 
+            overflow: hidden; 
+            margin-bottom: 10px;
         }
-        .featured-post-meta {
-            font-size: 0.8rem;
-            color: #999;
-        }
-        .featured-post-default { /* Estilo para quando não houver destaque */
-             background: var(--cor-terciaria);
-             padding: 40px;
-             text-align: center;
-             border-radius: 8px;
-             box-shadow: 0 4px 12px rgba(0,0,0,0.05);
-             margin-bottom: 30px;
-        }
-
-
-        /* --- NOTÍCIAS (NEWS GRID) --- */
+        .featured-meta { font-size: 0.8rem; color: #999; }
+        
+        /* GRID DE NOTÍCIAS (4 POSTS) */
         .news-grid {
             display: grid;
-            grid-template-columns: repeat(4, 1fr); /* 4 colunas */
+            grid-template-columns: repeat(2, 1fr);
             gap: 20px;
+            margin-bottom: 30px;
         }
+
+        /* CARD DE NOTÍCIA (para o grid) */
         .post-card { 
             background: var(--cor-terciaria); 
             border-radius: 8px; 
@@ -136,50 +160,48 @@
             box-shadow: 0 2px 8px rgba(0,0,0,0.1); 
             transition: transform 0.2s; 
         }
-        .post-card:hover { transform: translateY(-5px); box-shadow: 0 6px 15px rgba(0,0,0,0.15); }
-        .post-card-img { height: 150px; overflow: hidden; }
+        .post-card:hover { transform: translateY(-3px); box-shadow: 0 4px 10px rgba(0,0,0,0.15); }
+        .post-card-img { height: 180px; overflow: hidden; }
         .post-card-img img { width: 100%; height: 100%; object-fit: cover; }
         .post-card-content { padding: 15px; }
-        .post-card-category { font-size: 0.7rem; font-weight: 700; color: #777; text-transform: uppercase; margin-bottom: 5px; }
-        .post-card-title { font-family: 'Montserrat', sans-serif; font-size: 0.95rem; margin-bottom: 8px; color: var(--texto-escuro); height: 40px; overflow: hidden;}
-        .post-card-meta { font-size: 0.75rem; color: #999; margin-top: 5px; }
+        .post-card-category { font-size: 0.75rem; font-weight: 700; color: #777; text-transform: uppercase; margin-bottom: 5px; }
+        .post-card-title { font-family: 'Montserrat', sans-serif; font-size: 1.1rem; margin-bottom: 10px; color: var(--texto-escuro); }
+        .post-card-excerpt { font-size: 0.9rem; color: #555; height: 40px; overflow: hidden; }
+        .post-card-meta { font-size: 0.75rem; color: #999; margin-top: 10px; }
 
-        /* --- PUBLICIDADE --- */
-        .ad-container {
-            display: grid;
-            grid-template-columns: 2fr 1fr; /* Vídeo maior que a imagem */
-            gap: 20px;
-            margin-top: 30px;
-            margin-bottom: 40px;
+        /* OUTRAS NOTÍCIAS (LISTA) */
+        .other-news-list {
+            margin-top: 20px;
         }
-
-        .ad-video, .ad-image {
-            background: var(--cor-terciaria);
-            border-radius: 8px;
-            padding: 15px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        .other-news-list li a { 
+            display: flex;
+            gap: 15px;
+            padding: 15px 0; 
+            border-bottom: 1px solid #eee;
+            align-items: center;
         }
+        .other-news-list li:last-child a { border-bottom: none; }
+        .other-news-list li a:hover .other-news-title { color: var(--cor-primaria); }
 
-        .ad-video h4, .ad-image h4 {
-            font-family: 'Montserrat', sans-serif; 
-            font-size: 0.9rem;
-            color: #cc0000;
-            text-align: center;
-            margin-bottom: 10px;
-            font-weight: 700;
+        .other-news-img {
+            flex-shrink: 0;
+            width: 80px;
+            height: 60px;
+            overflow: hidden;
+            border-radius: 4px;
         }
-
-        .ad-video iframe {
+        .other-news-img img {
             width: 100%;
-            height: 300px;
-            border-radius: 6px;
-        }
-
-        .ad-image img {
-            max-height: 300px;
+            height: 100%;
             object-fit: cover;
-            border-radius: 6px;
         }
+        .other-news-info {
+            flex-grow: 1;
+        }
+        .other-news-category { font-size: 0.7rem; font-weight: 700; color: var(--cor-secundaria); text-transform: uppercase; margin-bottom: 3px; }
+        .other-news-title { font-family: 'Montserrat', sans-serif; font-size: 0.9rem; color: var(--texto-escuro); transition: color 0.2s; }
+        .other-news-meta { font-size: 0.7rem; color: #999; margin-top: 3px; }
+        
 
         /* FOOTER */
         footer { background-color: var(--cor-secundaria); color: var(--cor-terciaria); padding: 30px 0; border-top: 4px solid var(--cor-primaria); }
@@ -190,28 +212,39 @@
 
         /* RESPONSIVIDADE */
         @media (max-width: 992px) {
-            .featured-post-container {
+            .container { 
+                grid-template-columns: 1fr; 
+                padding: 0 10px;
+            }
+            .sidebar {
+                position: static;
+                order: 2; 
+            }
+            .main-content {
+                order: 1;
+            }
+            .header-main {
+                 flex-wrap: wrap; 
+            }
+            .nav-menu {
+                display: none;
                 flex-direction: column;
+                width: 100%;
+                order: 4;
             }
-            .featured-post-img {
-                height: 300px;
+            .nav-menu.active {
+                display: flex;
             }
-            .news-grid { 
-                grid-template-columns: repeat(2, 1fr); 
-            }
-            .ad-container {
-                grid-template-columns: 1fr;
-            }
-            .header-main { flex-wrap: wrap; }
-            .nav-menu { display: none; flex-direction: column; width: 100%; order: 4; }
-            .nav-menu.active { display: flex; }
             .menu-toggle { display: block; order: 3; }
+
+            .featured-img-container { height: 300px; }
+            .featured-title { font-size: 1.8rem; }
         }
         @media (max-width: 600px) {
-            .news-grid { grid-template-columns: 1fr; }
-            .footer-content { grid-template-columns: 1fr; }
-            .featured-post-title { font-size: 1.5rem; }
-            .ad-video iframe { height: 200px; }
+            .news-grid { grid-template-columns: 1fr; } 
+            .footer-content { grid-template-columns: 1fr 1fr; }
+            .featured-img-container { height: 200px; }
+            .featured-title { font-size: 1.5rem; }
         }
     </style>
 </head>
@@ -224,7 +257,7 @@
             </a>
             <div class="menu-toggle" onclick="toggleMenu()">&#9776;</div>
             <nav class="nav-menu" id="navMenu">
-                <a href="index.html" class="active">Início</a>
+                <a href="index.html">Início</a>
                 <a href="categoria.html?cat=Cidade">Cidade</a>
                 <a href="categoria.html?cat=Polícia">Polícia</a>
                 <a href="categoria.html?cat=Política">Política</a>
@@ -238,40 +271,39 @@
     </header>
 
     <main class="container">
-        <h2 class="section-title"> Destaque do Dia</h2>
-        <section id="featured-post">
-            <div class="featured-post-default">
-                <p style="font-size: 1.2rem; color: var(--cor-secundaria);">Carregando a notícia principal...</p>
-                <p style="margin-top: 10px; font-size: 0.9rem; color: #777;">Se não houver posts publicados, o destaque permanecerá vazio.</p>
-            </div>
+        <section class="main-content">
+            <h2 id="section-title-destaque">ÚLTIMA NOTÍCIA</h2>
+            
+            <div id="featured-post-container">
+                <p style="text-align: center; padding: 20px; background: #fff; border-radius: 8px;">Carregando posts...</p>
+                </div>
+            
+            <h2 id="section-title-grid" style="display: none;">DESTAQUES</h2>
+            <div class="news-grid" id="news-grid">
+                </div>
+            
+            <h2 id="section-title-outras" style="display: none;">MAIS NOTÍCIAS</h2>
+            <ul class="other-news-list" id="other-news-list">
+                </ul>
+
         </section>
 
-        <div class="ad-container">
-            <div class="ad-video">
-                <h4>PUBLICIDADE EM VÍDEO</h4>
-                <iframe 
-                    width="560" 
-                    height="315" 
-                    src="https://www.youtube.com/watch?v=YB-fz1SV95Q&t=2s" 
-                    title="Anúncio em Vídeo" 
-                    frameborder="0" 
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-                    allowfullscreen>
-                </iframe>
+        <aside class="sidebar">
+            <div class="ad-widget">
+                <h4>ANÚNCIO</h4>
+                <p>Espaço Publicitário 300x600</p>
+                <img src="https://via.placeholder.com/300x600?text=ANUNCIE+AQUI" alt="Banner Publicitário Sidebar" style="margin-top: 15px; border: 1px solid #ccc;">
             </div>
-            <div class="ad-image">
-                <h4>PUBLICIDADE EM IMAGEM</h4>
-                <a href="#" target="_blank">
-                    <img src="https://via.placeholder.com/400x300?text=ANUNCIE+AQUI+400x300" alt="Banner Publicitário">
-                </a>
+            
+            <div class="widget">
+                <h4>MAIS LIDAS</h4>
+                <ul class="top-list">
+                    <li><a href="#">Título de outra notícia popular...</a></li>
+                    <li><a href="#">Outro título de notícia...</a></li>
+                    <li><a href="#">Terceira notícia mais lida...</a></li>
+                </ul>
             </div>
-        </div>
-
-        <h2 class="section-title">⌛ Últimas Notícias</h2>
-        <section class="news-grid" id="latest-news-grid">
-            <p style="grid-column: 1 / -1; text-align: center;">Carregando as notícias mais recentes...</p>
-        </section>
-
+        </aside>
     </main>
 
     <footer>
@@ -292,10 +324,10 @@
                 <a href="categoria.html?cat=Cultura">Cultura</a>
             </div>
             <div class="footer-col">
-                <h4>Institucional</h4>
-                <a href="quem-somos.html">Quem Somos</a>
-                <a href="anuncie.html">Anuncie</a>
-            </div>
+    <h4>Institucional</h4>
+    <a href="quem-somos.html">Quem Somos</a>
+    <a href="anuncie.html">Anuncie</a>
+</div>
             <div class="footer-col">
                 <h4>Redes Sociais</h4>
                 <a href="https://www.instagram.com/tvpesqueira" target="_blank">Instagram</a>
@@ -310,7 +342,7 @@
     </footer>
 
     <script>
-        // --- FUNÇÕES COMPARTILHADAS (Extraídas dos outros arquivos) ---
+        // Funções essenciais do sistema de posts
         const POSTS_STORAGE_KEY = 'tvpesqueira_posts';
         
         function loadPosts() {
@@ -338,92 +370,98 @@
             }
         }
         
-        function toggleMenu() {
-            var menu = document.getElementById("navMenu");
-            menu.classList.toggle("active");
-        }
-        // --- FIM DAS FUNÇÕES COMPARTILHADAS ---
-
-
         function renderHomePage() {
-            // 1. Carrega todos os posts e filtra os publicados
-            const allPosts = loadPosts(); 
-            const publishedPosts = allPosts
+            const allPublishedPosts = loadPosts()
                 .filter(p => p.status === 'published')
-                .sort((a, b) => new Date(b.date) - new Date(a.date)); // Ordena por mais recente
+                .sort((a, b) => new Date(b.date) - new Date(a.date)); // Mais recente primeiro
 
-            // --- 2. DESTAQUE (Featured Post) ---
-            const featuredPostElement = document.getElementById('featured-post');
-            const featuredPost = publishedPosts.length > 0 ? publishedPosts[0] : null;
+            const featuredContainer = document.getElementById('featured-post-container');
+            const gridElement = document.getElementById('news-grid');
+            const listElement = document.getElementById('other-news-list');
+            
+            // Oculta títulos de seção por padrão
+            document.getElementById('section-title-grid').style.display = 'none';
+            document.getElementById('section-title-outras').style.display = 'none';
 
-            if (featuredPost) {
-                // Renderiza o destaque com o primeiro post
-                featuredPostElement.innerHTML = `
-                    <a href="post.html?id=${featuredPost.id}" class="featured-post-container">
-                        <div class="featured-post-img">
-                            <img src="${featuredPost.img || 'https://via.placeholder.com/600x400.png?text=Noticia+Destaque'}" alt="${featuredPost.title}" onerror="this.onerror=null; this.src='https://via.placeholder.com/600x400.png?text=Noticia+Destaque'">
-                        </div>
-                        <div class="featured-post-content">
-                            <div class="featured-post-category">${featuredPost.category || 'Geral'}</div>
-                            <h2 class="featured-post-title">${featuredPost.title}</h2>
-                            <p class="featured-post-excerpt">${featuredPost.description}</p>
-                            <p class="featured-post-meta">Por ${featuredPost.author || 'Redação'} - ${formatDate(featuredPost.date)}</p>
-                        </div>
-                    </a>
-                `;
-            } else {
-                 // Se não houver posts publicados, exibe a mensagem padrão
-                 featuredPostElement.innerHTML = `
-                    <div class="featured-post-default">
-                        <p style="font-size: 1.2rem; color: var(--cor-secundaria);">Nenhuma notícia publicada para destaque no momento.</p>
-                        <p style="margin-top: 10px; font-size: 0.9rem; color: #777;">Crie um novo post no Dashboard para ver o conteúdo aqui.</p>
+
+            if (allPublishedPosts.length === 0) {
+                // Nenhuma notícia publicada
+                featuredContainer.innerHTML = `
+                    <div style="padding: 30px; text-align: center; background: #fff; border-radius: 8px;">
+                        <p style="font-size: 1.5rem; color: var(--cor-secundaria);">😔 Nenhuma notícia publicada no momento.</p>
+                        <p style="margin-top: 10px; font-size: 1rem;">O sistema de notícias está vazio. Use o Dashboard para criar e publicar seu primeiro post!</p>
                     </div>
                 `;
+                document.getElementById('section-title-destaque').textContent = "BEM-VINDO";
+                return;
             }
 
-            // --- 3. ÚLTIMAS NOTÍCIAS (Latest News Grid) ---
-            const latestNewsGridElement = document.getElementById('latest-news-grid');
-            
-            // Pega os 4 posts mais recentes (excluindo o destaque, se houver)
-            const latestPosts = publishedPosts.slice(featuredPost ? 1 : 0, (featuredPost ? 1 : 0) + 4);
+            // 1. Destaque Principal (o mais recente)
+            const featuredPost = allPublishedPosts[0];
+            const featuredHtml = `
+                <a href="post.html?id=${featuredPost.id}" class="featured-post">
+                    <div class="featured-img-container">
+                        <img src="${featuredPost.img || 'https://via.placeholder.com/800x400?text=DESTAQUE'}" alt="${featuredPost.title}" onerror="this.onerror=null; this.src='https://via.placeholder.com/800x400?text=DESTAQUE'">
+                    </div>
+                    <div class="featured-content">
+                        <div class="featured-category">${featuredPost.category || 'Geral'}</div>
+                        <h1 class="featured-title">${featuredPost.title}</h1>
+                        <p class="featured-excerpt">${featuredPost.description}</p>
+                        <p class="featured-meta">Por ${featuredPost.author || 'Redação'} - ${formatDate(featuredPost.date)}</p>
+                    </div>
+                </a>
+            `;
+            featuredContainer.innerHTML = featuredHtml;
 
-            if (latestPosts.length > 0) {
-                const postsHtml = latestPosts.map(post => `
+            // 2. Grid de Notícias (próximos 4)
+            const gridPosts = allPublishedPosts.slice(1, 5);
+            if (gridPosts.length > 0) {
+                document.getElementById('section-title-grid').style.display = 'block';
+                const gridHtml = gridPosts.map(post => `
                     <a href="post.html?id=${post.id}" class="post-card">
                         <div class="post-card-img">
-                            <img src="${post.img || 'https://via.placeholder.com/300x150.png?text=Sem+Imagem'}" alt="${post.title}" onerror="this.onerror=null; this.src='https://via.placeholder.com/300x150.png?text=Sem+Imagem'">
+                            <img src="${post.img || 'https://via.placeholder.com/300x180.png?text=Sem+Imagem'}" alt="${post.title}" onerror="this.onerror=null; this.src='https://via.placeholder.com/300x180.png?text=Sem+Imagem'">
                         </div>
                         <div class="post-card-content">
                             <div class="post-card-category">${post.category || 'Geral'}</div>
                             <h3 class="post-card-title">${post.title}</h3>
+                            <p class="post-card-excerpt">${post.description}</p>
                             <p class="post-card-meta">Por ${post.author || 'Redação'} - ${formatDate(post.date)}</p>
                         </div>
                     </a>
                 `).join(''); 
-                
-                latestNewsGridElement.innerHTML = postsHtml;
+                gridElement.innerHTML = gridHtml;
+            }
 
-            } else if (!featuredPost) {
-                // Se não houver NENHUM post, exibe mensagem na grade de últimas notícias
-                latestNewsGridElement.innerHTML = `
-                    <div style="grid-column: 1 / -1; padding: 20px; text-align: center; background: #fff; border-radius: 8px;">
-                        <p style="font-size: 1.2rem; color: #555;">😔 Não há nenhuma notícia publicada no sistema.</p>
-                        <p style="margin-top: 10px; font-size: 0.9rem;">Verifique o Dashboard para publicar novos posts.</p>
-                    </div>
-                `;
-            } else {
-                 // Se houver SOMENTE o destaque, limpa a grade
-                 latestNewsGridElement.innerHTML = `
-                    <div style="grid-column: 1 / -1; padding: 20px; text-align: center; background: #fff; border-radius: 8px;">
-                        <p style="font-size: 1rem; color: #555;">O destaque do dia é a única notícia publicada no momento.</p>
-                    </div>
-                 `;
+            // 3. Outras Notícias (o restante)
+            const listPosts = allPublishedPosts.slice(5);
+            if (listPosts.length > 0) {
+                document.getElementById('section-title-outras').style.display = 'block';
+                const listHtml = listPosts.map(post => `
+                    <li>
+                        <a href="post.html?id=${post.id}">
+                            <div class="other-news-img">
+                                <img src="${post.img || 'https://via.placeholder.com/80x60?text=Img'}" alt="${post.title}" onerror="this.onerror=null; this.src='https://via.placeholder.com/80x60?text=Img'">
+                            </div>
+                            <div class="other-news-info">
+                                <div class="other-news-category">${post.category || 'Geral'}</div>
+                                <div class="other-news-title">${post.title}</div>
+                                <p class="other-news-meta">Por ${post.author || 'Redação'} - ${formatDate(post.date)}</p>
+                            </div>
+                        </a>
+                    </li>
+                `).join('');
+                listElement.innerHTML = listHtml;
             }
         }
 
-        // 4. EXECUTA A FUNÇÃO AO CARREGAR A PÁGINA
+        function toggleMenu() {
+            var menu = document.getElementById("navMenu");
+            menu.classList.toggle("active");
+        }
+
+        // Executa o carregamento dos posts ao carregar a página
         document.addEventListener('DOMContentLoaded', renderHomePage);
     </script>
 </body>
 </html>
-
